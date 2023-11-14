@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <link rel="stylesheet" href="stylesheet.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Register Infrastructure</title>
+    </head>
+    <body>
+        <h1 class="header1">Register a Infrastructure to the Community!</h1>
+        <div class="registermembersform">
+            <form action="registerinfrastructure_processing.jsp">
+                <p class="row">
+                    <label class="text1" for="infrastructurename">Infrastructure Name: </label>
+                    <input class='inputregister' id="infrastructurename" name="infrastructurename" required>
+                </p>
+                
+                <p class="row">
+                    <label class="text1">Type of Infrastructure </label><br>
+                </p>
+                <p class="row">
+                    <input id="amenities" type="radio" name="infrastructure" value="A" required><label class="text2" for="amenities">Amenities</label>
+                </p>
+                <p class="row">
+                    <input id="rental" type="radio" name="infrastructure" value="R"><label class="text2" for="rental">Rental</label>
+                </p>
+                <p class="row">
+                    <input id="unit" type="radio" name="infrastructure" value="U"><label class="text2" for="unit">Unit</label>
+                </p>
+               
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </body>
+</html>

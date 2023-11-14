@@ -4,7 +4,7 @@
     Author     : ccslearner
 --%>
 
-<%@page import="DB_Complaints_src.*, java.lang.NumberFormatException"%>
+<%@page import="DB_Complaints_src.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -16,25 +16,22 @@
     <body>
         <jsp:useBean id="memberid" class="DB_Complaints_src.PeopleManager" scope="session"/>
         <%
-            int id;
-            try{
-                id = Integer.parseInt(request.getParameter("getId"));
-            } catch (NumberFormatException e){
-                id = -1;
-            }
+            int id = Integer.parseInt(request.getParameter("getid"));
             Member copy = new Member();
-            boolean exists = memberid.doesMemberExist(id, copy);
+            copy.firstname = "ace";
+            
+            boolean exists = memberid.memberExists(id);
             
             if(!exists && id != 1){
         %>
-        <h1 class="header2"> INVALID MEMBER </h1>
-        <button class='button1' onclick="window.location.href = 'member.jsp';">go back</button>
+        <h1 class="header2"> Member does not exists </h1>
+        <button class='button1' onclick="window.location.href = 'index.html';">go back</button>
         <%
             } else {
         %>
-        <label class="text1">Please input the complaints that you may have, <%=copy.getFirstname()%></label>
+        <label class="text2">Please input the complaints that you may have, <%=copy.firstname%></label>
         <div class='complaintsform'>
-            <form action="membercomplaintsresults.jsp">
+            <form action="membercomplaints_processing.jsp">
                 <table>
                     <tr>
                         <th>

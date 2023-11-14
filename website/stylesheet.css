@@ -8,12 +8,8 @@ table, th, td {
     color: black;
     border: 2px solid white;
     border-collapse: collapse;
-    padding-left: 12px; 
-    padding-top: 12px;
-    padding-bottom: 12px;
-    padding-right: 12px;
+    padding: 12px;
     margin: auto;
-    align-items: center;
 }
 
 #input {
@@ -23,12 +19,12 @@ table, th, td {
 
 .button1{
     text-align: center;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family:'Courier New', Courier, monospace;
     background-color: aliceblue;
     padding: 8px 12px;
     border-radius: 4px;
     cursor: pointer;
-    color: white;
+    color: black;
     margin: 10px;
 }
 
@@ -48,6 +44,13 @@ table, th, td {
 }
 
 .text1 {
+    display: table-cell;
+    font-size: 20px;
+    font-family:'Courier New', Courier, monospace;
+    color: blueviolet;
+}
+
+.text2 {
     font-size: 20px;
     font-family:'Courier New', Courier, monospace;
     color: blueviolet;
@@ -55,4 +58,32 @@ table, th, td {
 
 a:link {
     color: coral;
+}
+
+textarea {
+    resize: none;
+}
+
+.complaintsform {
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px dotted red;
+    height: 700px;
+    width: 500px;
+    margin: auto;
+}
+
+.registermembersform {
+    margin: auto;
+    display: table;
+    text-align: left;
+}
+
+.row{
+    display: table-row;
+}
+
+.inputregister {
+    display: table-cell;
 }

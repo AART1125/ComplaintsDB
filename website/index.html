@@ -7,22 +7,32 @@ and open the template in the editor.
 <html>
     <head>
         <link rel="stylesheet" href="stylesheet.css">
-        <title>Community Complaints and Resolutions </title>
+        <title>CCINFOM Community Apartment Website</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <h1 class="header1">Complaints and Resolution</h1>
+        <h1 class="header1">CCINFOM Community Apartment Website</h1>
         <h2 class="header2">Hello dear user!</h2>
         <div>
             <table>
                 <tr>
                    <th>Member</th>
                    <th>Personnel</th>
+                   <th>Infrastructure</th>
                 </tr>
                 <tr>
-                   <td><a href="member.jsp">Sign in a member</a></td>
-                   <td><a href="personnel.jsp">Sign in as Personnel</a></td>
+                    <td><button class="button1" onclick="window.location.href='registermember.html'">Register Member</button></td>
+                    <td><button class="button1" onclick="window.location.href='registerpersonnel.html'">Register Personnel</button></td>
+                    <td><button class="button1" onclick="window.location.href='registerinfrastructure.html'">Register Infrastructure</button></td>
+                </tr>
+                <tr>
+                    <td><button class="button1" onclick="window.location.href='modifymember.html'">Modify Member</button></td>
+                    <td><button class="button1" onclick="window.location.href='modifypersonnel.html'">Modify Personnel</button></td>
+                    <td><button class="button1" onclick="window.location.href='modifyinfrastructure.html'">Modify Infrastructure</button></td>
+                </tr>
+                <tr>
+                    <td><button class="button1" onclick="window.location.href='membercomplaintssignin.html'">Create a complaint</button></td>
                 </tr>
             </table>
         </div>
