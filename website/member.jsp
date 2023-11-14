@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.sql.*, DB_Complaints_src.*" %>
+<%@page import="java.sql.*" import="DB_Complaints_src.*"%>
 <!DOCTYPE html>
 <html>
     <head>
