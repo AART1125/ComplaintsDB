@@ -1,4 +1,5 @@
 package src;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -14,10 +15,12 @@ import java.util.ArrayList;
  */
 public class Member {
 
+
     public String   dbpath = "";
 
     public int      memberid;//PK
     public String   lastname;
+    public String   middlename;
     public String   firstname;
     public String   dateofbirth;
     public Gender   gender;
@@ -41,9 +44,10 @@ public class Member {
      * @param contactnumber contact number of the member
      * @param unitnumber unit number the member is residing in
      */
-    public Member(int memberid, String lastname, String firstname, String dateofbirth, Gender gender, String email, int contactnumber, int unitnumber) {
+    public Member(int memberid, String lastname, String middlename, String firstname, String dateofbirth, Gender gender, String email, int contactnumber, int unitnumber) {
         this.memberid = memberid;
         this.lastname = lastname;
+        this.middlename = middlename;
         this.firstname = firstname;
         this.dateofbirth = dateofbirth;
         this.gender = gender;
@@ -64,16 +68,17 @@ public class Member {
                 baseId = Integer.valueOf(results.getString("newMemberId"));
             }
 
-            statement = conn.prepareStatement("INSERT INTO member VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+            statement = conn.prepareStatement("INSERT INTO member VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             statement.setInt(1, baseId);
             statement.setString(2, lastname);
-            statement.setString(3, firstname);
-            statement.setString(4, dateofbirth);
-            statement.setString(5, gender.name());
-            statement.setString(6, email);
-            statement.setInt(7, contactnumber);
-            statement.setInt(8, unitnumber);
+            statement.setString(3, middlename);
+            statement.setString(4, firstname);
+            statement.setString(5, dateofbirth);
+            statement.setString(6, gender.name());
+            statement.setString(7, email);
+            statement.setInt(8, contactnumber);
+            statement.setInt(9, unitnumber);
 
             statement.executeUpdate();
             statement.close();
@@ -88,16 +93,17 @@ public class Member {
     public boolean modify_member(){
         try {
             Connection conn = DriverManager.getConnection(dbpath);
-            PreparedStatement statement = conn.prepareStatement("UPDATE member SET lastname=?, firstname=?, dateofbirth=?, gender=?, email=?, contactnum=?, unitnum=?  WHERE memberid = ?");
+            PreparedStatement statement = conn.prepareStatement("UPDATE member SET lastname=?, middlename=?, firstname=?, dateofbirth=?, gender=?, email=?, contactnum=?, unitnum=?  WHERE memberid = ?");
 
             statement.setString(1, lastname);
-            statement.setString(2, firstname);
-            statement.setString(3, dateofbirth);
-            statement.setString(4, gender.name());
-            statement.setString(5, email);
-            statement.setInt(6, contactnumber);
-            statement.setInt(7, unitnumber);
-            statement.setInt(8, memberid);
+            statement.setString(2, middlename);
+            statement.setString(3, firstname);
+            statement.setString(4, dateofbirth);
+            statement.setString(5, gender.name());
+            statement.setString(6, email);
+            statement.setInt(7, contactnumber);
+            statement.setInt(8, unitnumber);
+            statement.setInt(9, memberid);
 
             statement.executeUpdate();
             statement.close();
@@ -133,6 +139,7 @@ public class Member {
             while (results.next()) {
                 memberid = results.getInt("memberid");
                 lastname = results.getString("lastname");
+                middlename = results.getString("middlename");
                 firstname = results.getString("firstname");
                 dateofbirth = results.getString("dateofbirth");
                 gender = Gender.valueOf(results.getString("gender"));

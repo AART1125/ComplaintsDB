@@ -47,12 +47,13 @@ public class PeopleManager {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM member");
             ResultSet memberinfo = statement.executeQuery();
 
-            String lname, fname, dateofbirth, gender, email;
+            String lname, mname, fname, dateofbirth, gender, email;
             int contactnum,unitnum,memberId;
             
             while (memberinfo.next()) {
                 memberId = memberinfo.getInt("memberid");
                 lname = memberinfo.getString("lastname");
+                mname = memberinfo.getString("middlename");
                 fname = memberinfo.getString("firstname");
                 dateofbirth = memberinfo.getString("dateofbirth");
                 gender = memberinfo.getString("gender");
@@ -61,7 +62,7 @@ public class PeopleManager {
                 contactnum = memberinfo.getInt("contactnum");
                 unitnum = memberinfo.getInt("unitnum");
 
-                memberlist.add(new Member(memberId, lname, fname, dateofbirth, gen, email, contactnum, unitnum));
+                memberlist.add(new Member(memberId, lname, mname, fname, dateofbirth, gen, email, contactnum, unitnum));
             }
 
             conn.close();
@@ -79,12 +80,13 @@ public class PeopleManager {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM member WHERE gender = 'M'");
             ResultSet memberinfo = statement.executeQuery();
 
-            String lname, fname, dateofbirth, gender, email;
+            String lname, mname, fname, dateofbirth, gender, email;
             int contactnum,unitnum,memberId;
             
             while (memberinfo.next()) {
                 memberId = memberinfo.getInt("memberid");
                 lname = memberinfo.getString("lastname");
+                mname = memberinfo.getString("middlename");
                 fname = memberinfo.getString("firstname");
                 dateofbirth = memberinfo.getString("dateofbirth");
                 gender = memberinfo.getString("gender");
@@ -93,7 +95,7 @@ public class PeopleManager {
                 contactnum = memberinfo.getInt("contactnum");
                 unitnum = memberinfo.getInt("unitnum");
 
-                memberlist.add(new Member(memberId, lname, fname, dateofbirth, gen, email, contactnum, unitnum));
+                memberlist.add(new Member(memberId, lname, mname, fname, dateofbirth, gen, email, contactnum, unitnum));
             }
 
             conn.close();
@@ -111,12 +113,13 @@ public class PeopleManager {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM member WHERE gender = 'F'");
             ResultSet memberinfo = statement.executeQuery();
 
-            String lname, fname, dateofbirth, gender, email;
+            String lname, mname, fname, dateofbirth, gender, email;
             int contactnum,unitnum,memberId;
             
             while (memberinfo.next()) {
                 memberId = memberinfo.getInt("memberid");
                 lname = memberinfo.getString("lastname");
+                mname = memberinfo.getString("middlename");
                 fname = memberinfo.getString("firstname");
                 dateofbirth = memberinfo.getString("dateofbirth");
                 gender = memberinfo.getString("gender");
@@ -125,7 +128,7 @@ public class PeopleManager {
                 contactnum = memberinfo.getInt("contactnum");
                 unitnum = memberinfo.getInt("unitnum");
 
-                memberlist.add(new Member(memberId, lname, fname, dateofbirth, gen, email, contactnum, unitnum));
+                memberlist.add(new Member(memberId, lname, mname, fname, dateofbirth, gen, email, contactnum, unitnum));
             }
 
             conn.close();
