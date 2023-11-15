@@ -16,27 +16,6 @@ import java.util.*;
 
 public class Personnel {
 
-    public enum AvailTime {
-        M,
-        A
-    }
-
-    public enum Undertaking {
-        Y,
-        N
-    }
-
-    public enum Position {
-        S,
-        M,
-        A
-    }
-
-    public enum Gender {
-        M,
-        F
-    }
-
     public String   dbpath = "";
 
     public int personnelid;
