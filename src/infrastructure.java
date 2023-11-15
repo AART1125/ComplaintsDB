@@ -12,7 +12,7 @@ import java.util.*;
  *
  * @author ccslearner
  */
-public class infrastructure {
+public class Infrastructure {
     
     //fields of infrastructure
         
