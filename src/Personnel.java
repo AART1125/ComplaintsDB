@@ -28,8 +28,6 @@ public class Personnel {
     public int contactnumber;
     public Undertaking undertaking;
     public String hiredate; 
-    public String availdays;
-    public AvailTime availtime;
     public Position position; 
 
     public ArrayList<Integer> personnel_idList = new ArrayList<Integer>();
@@ -49,11 +47,9 @@ public class Personnel {
      * @param contactnumber
      * @param undertaking
      * @param hiredate
-     * @param availdays
-     * @param availtime
      * @param position
      */
-    public Personnel (int personnelid,String lastname,String middlename,String firstname,String dateofbirth,Gender gender, String email, int contactnumber, Undertaking undertaking, String hiredate, String availdays, AvailTime availtime, Position position){
+    public Personnel (int personnelid,String lastname,String middlename,String firstname,String dateofbirth,Gender gender, String email, int contactnumber, Undertaking undertaking, String hiredate, Position position){
         this.personnelid = personnelid;
         this.lastname = lastname;
         this.middlename = middlename;
@@ -64,8 +60,6 @@ public class Personnel {
         this.contactnumber = contactnumber;
         this.undertaking = undertaking;
         this.hiredate = hiredate;
-        this.availdays = availdays;
-        this.availtime = availtime;
         this.position = position;
     }
 
@@ -80,7 +74,7 @@ public class Personnel {
                 baseId = Integer.valueOf(results.getString("newPersonnelId"));
             }
 
-            statement = conn.prepareStatement("INSERT INTO member VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            statement = conn.prepareStatement("INSERT INTO member VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             statement.setInt(1, baseId);
             statement.setString(2, lastname);
@@ -92,9 +86,7 @@ public class Personnel {
             statement.setInt(8, contactnumber);
             statement.setString(9, undertaking.name());
             statement.setString(10, hiredate);
-            statement.setString(11, availdays);
-            statement.setString(12, availtime.name());
-            statement.setString(13, position.name());
+            statement.setString(11, position.name());
 
             statement.executeUpdate();
             statement.close();
@@ -109,7 +101,7 @@ public class Personnel {
     public boolean modify_personnel(){
         try {
             Connection conn = DriverManager.getConnection(dbpath);
-            PreparedStatement statement = conn.prepareStatement("UPDATE personnel SET lastname=?, middlename=?, firstname=?, dateofbirth=?, gender=?, email=?, contactnumber=?, undertaking=?, hiredate=?, availdays=?, availtime=?, position=? WHERE personnelid = ?");
+            PreparedStatement statement = conn.prepareStatement("UPDATE personnel SET lastname=?, middlename=?, firstname=?, dateofbirth=?, gender=?, email=?, contactnumber=?, undertaking=?, hiredate=?, position=? WHERE personnelid = ?");
 
             statement.setString(1, lastname);
             statement.setString(2, middlename);
@@ -120,10 +112,8 @@ public class Personnel {
             statement.setInt(7, contactnumber);
             statement.setString(8, undertaking.name());
             statement.setString(9, hiredate);
-            statement.setString(10, availdays);
-            statement.setString(11, availtime.name());
-            statement.setString(12, position.name());
-            statement.setInt(13, personnelid);
+            statement.setString(10, position.name());
+            statement.setInt(11, personnelid);
 
             statement.executeUpdate();
             statement.close();
@@ -167,8 +157,6 @@ public class Personnel {
                 contactnumber = results.getInt("contactnumber");
                 undertaking = Undertaking.valueOf(results.getString("undertaking"));
                 hiredate = results.getString("hiredate");
-                availdays = results.getString("availdays");
-                availtime = AvailTime.valueOf(results.getString("availtime"));
                 position = Position.valueOf(results.getString("position"));
             }
 

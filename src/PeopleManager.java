@@ -25,8 +25,6 @@ public class PeopleManager {
     public ArrayList<Personnel> personnel_maintenance_list = list_maintenance_personnel();
     public ArrayList<Personnel> personnel_male_list = list_male_personnel();
     public ArrayList<Personnel> personnel_female_list = list_female_personnel();
-    public ArrayList<Personnel> personnel_avail_morning_list = list_avail_morning_personnel();
-    public ArrayList<Personnel> personnel_avail_afternoon_list = list_avail_afternoon_personnel();
 
     public boolean memberExists(int memberId){
         try {
@@ -176,7 +174,7 @@ public class PeopleManager {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel");
             ResultSet personnelinfo = statement.executeQuery();
 
-            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, availdays, availtime, position;
+            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, position;
             int contactnum, personnelid;
             
             while (personnelinfo.next()) {
@@ -192,13 +190,10 @@ public class PeopleManager {
                 undertaking = personnelinfo.getString("undertaking");
                 Undertaking undertakingValue = Undertaking.valueOf(undertaking);
                 hiredate = personnelinfo.getString("hiredate");
-                availdays = personnelinfo.getString("availdays");
-                availtime = personnelinfo.getString("availtime");
-                AvailTime availtimeValue = AvailTime.valueOf(availtime);
                 position = personnelinfo.getString("position");
                 Position positionValue = Position.valueOf(position);
 
-                personnellist.add(new Personnel(personnelid, lname, mname, fname, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, availdays, availtimeValue, positionValue));
+                personnellist.add(new Personnel(personnelid, lname, mname, fname, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
 
             }
 
@@ -217,7 +212,7 @@ public class PeopleManager {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE position = 'S'");
             ResultSet personnelinfo = statement.executeQuery();
 
-            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, availdays, availtime, position;
+            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, position;
             int contactnum, personnelid;
             
             while (personnelinfo.next()) {
@@ -233,13 +228,10 @@ public class PeopleManager {
                 undertaking = personnelinfo.getString("undertaking");
                 Undertaking undertakingValue = Undertaking.valueOf(undertaking);
                 hiredate = personnelinfo.getString("hiredate");
-                availdays = personnelinfo.getString("availdays");
-                availtime = personnelinfo.getString("availtime");
-                AvailTime availtimeValue = AvailTime.valueOf(availtime);
                 position = personnelinfo.getString("position");
                 Position positionValue = Position.valueOf(position);
 
-                personnellist.add(new Personnel(personnelid, lname, mname, fname, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, availdays, availtimeValue, positionValue));
+                personnellist.add(new Personnel(personnelid, lname, mname, fname, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
 
             }
 
@@ -258,7 +250,7 @@ public class PeopleManager {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE position = 'A'");
             ResultSet personnelinfo = statement.executeQuery();
 
-            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, availdays, availtime, position;
+            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, position;
             int contactnum, personnelid;
             
             while (personnelinfo.next()) {
@@ -274,13 +266,10 @@ public class PeopleManager {
                 undertaking = personnelinfo.getString("undertaking");
                 Undertaking undertakingValue = Undertaking.valueOf(undertaking);
                 hiredate = personnelinfo.getString("hiredate");
-                availdays = personnelinfo.getString("availdays");
-                availtime = personnelinfo.getString("availtime");
-                AvailTime availtimeValue = AvailTime.valueOf(availtime);
                 position = personnelinfo.getString("position");
                 Position positionValue = Position.valueOf(position);
 
-                personnellist.add(new Personnel(personnelid, lname, mname, fname, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, availdays, availtimeValue, positionValue));
+                personnellist.add(new Personnel(personnelid, lname, mname, fname, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
 
             }
 
@@ -299,7 +288,7 @@ public class PeopleManager {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE position = 'M'");
             ResultSet personnelinfo = statement.executeQuery();
 
-            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, availdays, availtime, position;
+            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, position;
             int contactnum, personnelid;
             
             while (personnelinfo.next()) {
@@ -315,13 +304,10 @@ public class PeopleManager {
                 undertaking = personnelinfo.getString("undertaking");
                 Undertaking undertakingValue = Undertaking.valueOf(undertaking);
                 hiredate = personnelinfo.getString("hiredate");
-                availdays = personnelinfo.getString("availdays");
-                availtime = personnelinfo.getString("availtime");
-                AvailTime availtimeValue = AvailTime.valueOf(availtime);
                 position = personnelinfo.getString("position");
                 Position positionValue = Position.valueOf(position);
 
-                personnellist.add(new Personnel(personnelid, lname, mname, fname, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, availdays, availtimeValue, positionValue));
+                personnellist.add(new Personnel(personnelid, lname, mname, fname, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
 
             }
 
@@ -340,7 +326,7 @@ public class PeopleManager {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE gender = 'M'");
             ResultSet personnelinfo = statement.executeQuery();
 
-            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, availdays, availtime, position;
+            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, position;
             int contactnum, personnelid;
             
             while (personnelinfo.next()) {
@@ -356,13 +342,10 @@ public class PeopleManager {
                 undertaking = personnelinfo.getString("undertaking");
                 Undertaking undertakingValue = Undertaking.valueOf(undertaking);
                 hiredate = personnelinfo.getString("hiredate");
-                availdays = personnelinfo.getString("availdays");
-                availtime = personnelinfo.getString("availtime");
-                AvailTime availtimeValue = AvailTime.valueOf(availtime);
                 position = personnelinfo.getString("position");
                 Position positionValue = Position.valueOf(position);
 
-                personnellist.add(new Personnel(personnelid, lname, mname, fname, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, availdays, availtimeValue, positionValue));
+                personnellist.add(new Personnel(personnelid, lname, mname, fname, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
 
             }
 
@@ -381,7 +364,7 @@ public class PeopleManager {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE gender = 'F'");
             ResultSet personnelinfo = statement.executeQuery();
 
-            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, availdays, availtime, position;
+            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, position;
             int contactnum, personnelid;
             
             while (personnelinfo.next()) {
@@ -397,95 +380,10 @@ public class PeopleManager {
                 undertaking = personnelinfo.getString("undertaking");
                 Undertaking undertakingValue = Undertaking.valueOf(undertaking);
                 hiredate = personnelinfo.getString("hiredate");
-                availdays = personnelinfo.getString("availdays");
-                availtime = personnelinfo.getString("availtime");
-                AvailTime availtimeValue = AvailTime.valueOf(availtime);
                 position = personnelinfo.getString("position");
                 Position positionValue = Position.valueOf(position);
 
-                personnellist.add(new Personnel(personnelid, lname, mname, fname, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, availdays, availtimeValue, positionValue));
-
-            }
-
-            conn.close();
-            
-            return personnellist;
-        } catch (SQLException e){
-            return null;
-        }
-    }
-
-    public ArrayList<Personnel> list_avail_morning_personnel(){
-        ArrayList<Personnel> personnellist = new ArrayList<>();
-        try {
-            Connection conn = DriverManager.getConnection(dbPath);
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE availtime = 'M'");
-            ResultSet personnelinfo = statement.executeQuery();
-
-            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, availdays, availtime, position;
-            int contactnum, personnelid;
-            
-            while (personnelinfo.next()) {
-                personnelid = personnelinfo.getInt("personnelid");
-                lname = personnelinfo.getString("lastname");
-                mname = personnelinfo.getString("middlename");
-                fname = personnelinfo.getString("firstname");
-                dateofbirth = personnelinfo.getString("dateofbirth");
-                gender = personnelinfo.getString("gender");
-                Gender gen = Gender.valueOf(gender);
-                email = personnelinfo.getString("email");
-                contactnum = personnelinfo.getInt("contactnum");
-                undertaking = personnelinfo.getString("undertaking");
-                Undertaking undertakingValue = Undertaking.valueOf(undertaking);
-                hiredate = personnelinfo.getString("hiredate");
-                availdays = personnelinfo.getString("availdays");
-                availtime = personnelinfo.getString("availtime");
-                AvailTime availtimeValue = AvailTime.valueOf(availtime);
-                position = personnelinfo.getString("position");
-                Position positionValue = Position.valueOf(position);
-
-                personnellist.add(new Personnel(personnelid, lname, mname, fname, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, availdays, availtimeValue, positionValue));
-
-            }
-
-            conn.close();
-            
-            return personnellist;
-        } catch (SQLException e){
-            return null;
-        }
-    }
-
-        public ArrayList<Personnel> list_avail_afternoon_personnel(){
-        ArrayList<Personnel> personnellist = new ArrayList<>();
-        try {
-            Connection conn = DriverManager.getConnection(dbPath);
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE availtime = 'A'");
-            ResultSet personnelinfo = statement.executeQuery();
-
-            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, availdays, availtime, position;
-            int contactnum, personnelid;
-            
-            while (personnelinfo.next()) {
-                personnelid = personnelinfo.getInt("personnelid");
-                lname = personnelinfo.getString("lastname");
-                mname = personnelinfo.getString("middlename");
-                fname = personnelinfo.getString("firstname");
-                dateofbirth = personnelinfo.getString("dateofbirth");
-                gender = personnelinfo.getString("gender");
-                Gender gen = Gender.valueOf(gender);
-                email = personnelinfo.getString("email");
-                contactnum = personnelinfo.getInt("contactnum");
-                undertaking = personnelinfo.getString("undertaking");
-                Undertaking undertakingValue = Undertaking.valueOf(undertaking);
-                hiredate = personnelinfo.getString("hiredate");
-                availdays = personnelinfo.getString("availdays");
-                availtime = personnelinfo.getString("availtime");
-                AvailTime availtimeValue = AvailTime.valueOf(availtime);
-                position = personnelinfo.getString("position");
-                Position positionValue = Position.valueOf(position);
-
-                personnellist.add(new Personnel(personnelid, lname, mname, fname, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, availdays, availtimeValue, positionValue));
+                personnellist.add(new Personnel(personnelid, lname, mname, fname, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
 
             }
 
