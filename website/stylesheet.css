@@ -18,6 +18,8 @@ table, th, td {
 }
 
 .button1{
+    height: 40px;
+    width: 270px;
     text-align: center;
     font-family:'Courier New', Courier, monospace;
     background-color: aliceblue;

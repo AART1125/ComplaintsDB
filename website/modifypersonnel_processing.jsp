@@ -1,6 +1,6 @@
 <%-- 
-    Document   : registerpersonnel_proccessing
-    Created on : 11 14, 23, 11:39:50 PM
+    Document   : modifypersonnel
+    Created on : 11 15, 23, 1:26:00 AM
     Author     : ccslearner
 --%>
 
@@ -16,6 +16,7 @@
     <body>
         <jsp:useBean id="complaints" class="DB_Complaints_src.PeopleRecords" scope="session"/>
         <%
+            int personnelid = Integer.valueOf(request.getParameter("memid"));
             String firstname = request.getParameter("firstname");
             String middlename = request.getParameter("middlename");
             String lastname = request.getParameter("lastname");

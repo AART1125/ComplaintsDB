@@ -1,8 +1,9 @@
 <%-- 
-    Document   : membercomplaintsresults
-    Created on : 11 14, 23, 1:59:55 PM
+    Document   : resolution_processing
+    Created on : 11 16, 23, 12:08:54 AM
     Author     : ccslearner
 --%>
+
 <%@page import="DB_Complaints_src.*, java.time.LocalDate"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -15,16 +16,20 @@
     <body>
         <jsp:useBean id="complaints" class="DB_Complaints_src.PeopleRecords" scope="session"/>
         <%
-            String type = request.getParameter("complainttype");
-            String complaint = request.getParameter("complaint");
+            int personnelincharge = (Integer) session.getAttribute("personnelid");
             String date = LocalDate.now().toString();
+            String desc = request.getParameter("resolve");
+            
+            if(desc.equals("hello")) {
         %>
         <h1>Successfully Submitted!</h1><br>
-        <h2>Resulting Complaint:</h2><br>
-        <h2>Date: <%=date%></h2><br>
-        <label>Type of Complaint: <%=type%></label><br>
-        <label>Complaint: </label><br>
-        <p style="font-style: bold;"><%=complaint%><p><br><br>
+        <%
+            } else {
+        %>
+        <h1>Unsuccessfully Submitted!</h1><br>
+        <%
+            }
+        %>
     <button class="button1" onclick="window.location.href='index.html'">Go Back to Home</button>
     </body>
 </html>

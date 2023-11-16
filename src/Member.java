@@ -1,4 +1,4 @@
-package src;
+package DB_Complaints_src;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -11,11 +11,10 @@ import java.util.ArrayList;
 
 /**
  *
- * @author ccslearner
+ * @author Aaron Ace Toledo
  */
 public class Member {
 
-    
 
     public String   dbpath = "";
 
@@ -136,6 +135,7 @@ public class Member {
             statement.setString(6, this.email);
             statement.setInt(7, this.contactnumber);
             statement.setInt(8, this.unitnumber);
+            statement.setInt(9, this.memberid);
 
 
             statement.executeUpdate();

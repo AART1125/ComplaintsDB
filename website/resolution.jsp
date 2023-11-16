@@ -1,6 +1,6 @@
 <%-- 
-    Document   : membermenu
-    Created on : 11 13, 23, 10:39:55 PM
+    Document   : resolution
+    Created on : 11 16, 23, 12:02:46 AM
     Author     : ccslearner
 --%>
 
@@ -18,37 +18,30 @@
         <%
             int id = Integer.parseInt(request.getParameter("getid"));
             
-            boolean exists = memberid.memberExists(id);
+            session.setAttribute("personnelid", id);
+            
+            boolean exists = memberid.personnelExists(id);
             
             if(!exists && id != 1){
         %>
-        <h1 class="header2"> Member does not exists </h1>
+        <h1 class="header2"> Personnel does not exists </h1>
         <button class='button1' onclick="window.location.href = 'index.html';">go back</button>
         <%
             } else {
         %>
         <label class="text2">Please input the complaints that you may have</label>
         <div class='complaintsform'>
-            <form action="membercomplaints_processing.jsp">
+            <form action="resolution_processing.jsp">
                 <table>
                     <tr>
-                        <th>
-                            <label> Type of Complaint</label><br>
-                            <input type="radio" id="personnel" value='P' name='complainttype' required>
-                            <label for='personnel'>Personnel</label><br>
-                            <input type="radio" id="infrastructure" value='I' name='complainttype'>
-                            <label for='infrastructure'>Infrastructure</label><br>
-                        </th>
-                    </tr>
-                    <tr>
                         <td>
-                            <label>Enter Complaint here:</label>
-                            <textarea rows='30' cols="50" id='complaint' name="complaint" required></textarea>
+                            <label>Enter description here:</label>
+                            <textarea rows='30' cols="50" id='resolve' name="resolve" required></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <input type="submit" value="Submit Complaint">
+                            <input type="submit" value="submit resolution">
                         </td>
                     </tr>
                 </table>

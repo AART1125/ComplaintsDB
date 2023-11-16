@@ -14,7 +14,7 @@
         <title>Member Registration</title>
     </head>
     <body>
-        <jsp:useBean id="regmember" class="DB_Complaints_src.PeopleManager" scope="session"/>
+        <jsp:useBean id="regmember" class="DB_Complaints_src.PeopleRecords" scope="session"/>
         <%
             Member added = new Member();
             

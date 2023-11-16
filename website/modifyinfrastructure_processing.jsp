@@ -1,6 +1,6 @@
 <%-- 
-    Document   : registerinfrastructure_proccessing
-    Created on : 11 15, 23, 12:07:20 AM
+    Document   : modifyinfrastructur_processing
+    Created on : 11 15, 23, 1:34:43 AM
     Author     : ccslearner
 --%>
 
@@ -16,6 +16,7 @@
     <body>
         <jsp:useBean id="complaints" class="DB_Complaints_src.PeopleRecords" scope="session"/>
         <%
+            int infraid = Integer.valueOf(request.getParameter("infraid"));
             String infrastructurename = request.getParameter("infrastructurename");
             Infrastructures type = Infrastructures.valueOf(request.getParameter("infrastructure"));
             
@@ -30,6 +31,6 @@
         <%
             }
         %>
-    <buton class="button1" onclick="window.location.href='index.html'">Go Back to Home</buton>
+    <button class="button1" onclick="window.location.href='index.html'">Go Back to Home</button>
     </body>
 </html>

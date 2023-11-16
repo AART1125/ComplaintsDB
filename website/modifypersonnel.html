@@ -14,9 +14,9 @@ and open the template in the editor.
     <body>
         <h1 class="header1">Modify a Member to the Community!</h1>
         <div class="registermembersform">
-            <form action="modifymember_processing.jsp">
+            <form action="modifypersonnel_processing.jsp">
                 <p class="row">
-                    <label class="text1" for="memid">Member ID: </label>
+                    <label class="text1" for="memid">Personnel ID: </label>
                     <input class='inputregister' id="memid" name="memid" required>
                 </p>
                 <p class="row">
@@ -49,12 +49,29 @@ and open the template in the editor.
                     <input class="inputregister" id="email" type="email" name="email" >
                 </p>
                 <p class="row">
-                    <label class="text1" for="contactnum">Contact Number:</label>
-                    <input class="inputregister" style="color: transparent" value="-1" id="contactnum" name="contactnum" >
+                    <label class="text1">Undertaking: </label><br>
                 </p>
                 <p class="row">
-                    <label class="text1" for="unitnum">Unit Number:</label>
-                    <input class="inputregister" style="color: transparent" value="-1" id="unitnum" name="unitnum" >
+                    <input id="yes" type="radio" name="undertaking" value="Y" required><label class="text2" for="yes">Yes</label>
+                </p>
+                <p class="row">
+                    <input id="no" type="radio" name="undertaking" value="N"><label class="text2" for="no">No</label>
+                </p>
+                <p class="row">
+                    <label class="text1" for="availdays">Available Day:</label>
+                    <input id="availdays" name="availdays">
+                </p>
+                <p class="row">
+                    <label class="text1" for="availtimes">Available Times:</label>
+                    <input id="availtimes" name="availtimes">
+                </p>
+                <p class="row">
+                    <label class="text1" for="email">Position: </label>
+                    <select id="position" name="positions" required>
+                        <option value="S">Security</option>
+                        <option value="M">Maintenance</option>
+                        <option value="A">Admin</option>
+                    </select>
                 </p>
                 
                 <input type="submit" value="Submit">

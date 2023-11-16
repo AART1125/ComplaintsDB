@@ -1,6 +1,6 @@
 <%-- 
-    Document   : registermember_proccessing
-    Created on : 11 14, 23, 10:48:02 PM
+    Document   : deletemember_processing
+    Created on : 11 15, 23, 8:24:08 PM
     Author     : ccslearner
 --%>
 
@@ -18,16 +18,9 @@
         <%
             Member added = new Member();
             
-            added.firstname = request.getParameter("firstname");
-            added.middlename = request.getParameter("middlename");
-            added.lastname = request.getParameter("lastname");
-            added.dateofbirth = request.getParameter("dateofbirth");
-            added.gender = Gender.valueOf(request.getParameter("gender"));
-            added.email = request.getParameter("email");
-            added.contactnumber = Integer.valueOf(request.getParameter("contactnum"));
-            added.unitnumber = Integer.valueOf(request.getParameter("unitnum"));
+            added.memberid = Integer.valueOf(request.getParameter("memberid"));
             
-            boolean success = added.register_member();
+            boolean success = added.delete_member();
             
             if (success || added.unitnumber == 1) {
         %>
@@ -39,6 +32,6 @@
         <%
             }
         %>
-    <buton class="button1" onclick="window.location.href='index.html'">Go Back to Home</buton>
+    <button class="button1" onclick="window.location.href='index.html'">Go Back to Home</button>
     </body>
 </html>

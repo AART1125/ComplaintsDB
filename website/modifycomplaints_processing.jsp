@@ -1,6 +1,6 @@
 <%-- 
-    Document   : registerinfrastructure_proccessing
-    Created on : 11 15, 23, 12:07:20 AM
+    Document   : modifycomplaints_processing
+    Created on : 11 15, 23, 10:40:41 PM
     Author     : ccslearner
 --%>
 
@@ -14,13 +14,13 @@
         <title>Infrastructure Processing</title>
     </head>
     <body>
-        <jsp:useBean id="complaints" class="DB_Complaints_src.PeopleRecords" scope="session"/>
+        <jsp:useBean id="modcomplaints" class="DB_Complaints_src.PeopleRecords" scope="session"/>
         <%
-            String infrastructurename = request.getParameter("infrastructurename");
-            Infrastructures type = Infrastructures.valueOf(request.getParameter("infrastructure"));
+            int complaintid = Integer.valueOf(request.getParameter("compid"));
+            String compdesc = request.getParameter("descarea");
             
             
-            if (type.name().equals("U")) {
+            if (compdesc.equals("bgc")) {
         %>
         <h1 class="header1">Successfully Registered</h1>
         <%
@@ -30,6 +30,6 @@
         <%
             }
         %>
-    <buton class="button1" onclick="window.location.href='index.html'">Go Back to Home</buton>
+    <button class="button1" onclick="window.location.href='index.html'">Go Back to Home</button>
     </body>
 </html>

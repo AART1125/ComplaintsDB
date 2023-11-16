@@ -1,4 +1,4 @@
-package src;
+package DB_Complaints_src;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,10 +15,11 @@ import java.util.*;
 public class Infrastructure {
     
     //fields of infrastructure
+    private String dbpath = "";
         
     public int infrastructureid;
     public String infrastructurename;
-    public InfrastructureType infrastructuretype;
+    public InfrastructureType infrastructuretype; 
     public Status status;
     
     public ArrayList<Integer> infrastructure_idlist = new ArrayList<> ();
@@ -26,14 +27,12 @@ public class Infrastructure {
     public ArrayList<InfrastructureType> infrastructure_typelist = new ArrayList<> ();
     public ArrayList<Status> infrastructure_statuslist = new ArrayList<> ();
     
-    
+    public Infrastructure () {}
         
     public int register_infrastructure(){
         
         try{
-            Connection conn;
-            conn = DriverManager.getConnection(dbpath);
-            System.out.println("Connection Successful");
+            Connection conn = DriverManager.getConnection(dbpath);
             
             PreparedStatement pstmt = conn.prepareStatement("Select MAX(infrastructure_id) + 1 AS newID FROM infrastructure");
             ResultSet rst = pstmt.executeQuery();
@@ -58,9 +57,5 @@ public class Infrastructure {
             System.out.println(e.getMessage());
             return 0;
         }
-    }
-    
-    public static void main(String args[]){
-
     }
 }
