@@ -26,7 +26,7 @@ public class Infrastructure {
     public ArrayList<InfrastructureType> infrastructure_typelist = new ArrayList<> ();
     public ArrayList<Status> infrastructure_statuslist = new ArrayList<> ();
     
-    public infrastructure(){}
+    
         
     public int register_infrastructure(){
         

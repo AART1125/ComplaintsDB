@@ -15,6 +15,7 @@ import java.util.ArrayList;
  */
 public class Member {
 
+    
 
     public String   dbpath = "";
 
@@ -90,20 +91,52 @@ public class Member {
         }
     }
 
-    public boolean modify_member(){
+    public boolean modify_member(String lastname, String middlename, String firstname, String dateofbirth, Gender gender, String email, int contactnumber, int unitnumber){
         try {
             Connection conn = DriverManager.getConnection(dbpath);
             PreparedStatement statement = conn.prepareStatement("UPDATE member SET lastname=?, middlename=?, firstname=?, dateofbirth=?, gender=?, email=?, contactnum=?, unitnum=?  WHERE memberid = ?");
 
-            statement.setString(1, lastname);
-            statement.setString(2, middlename);
-            statement.setString(3, firstname);
-            statement.setString(4, dateofbirth);
-            statement.setString(5, gender.name());
-            statement.setString(6, email);
-            statement.setInt(7, contactnumber);
-            statement.setInt(8, unitnumber);
-            statement.setInt(9, memberid);
+            if (!lastname.equals("")) {
+                this.lastname = lastname;
+            }
+            
+            if (!middlename.equals("")) {
+                this.middlename = middlename;
+            }
+
+            if (!firstname.equals("")) {
+                this.firstname = firstname;
+            }
+
+            if (!dateofbirth.equals("")) {
+                this.dateofbirth = dateofbirth;
+            }
+
+            if (!gender.name().equals("")) {
+                this.gender = gender;
+            }
+
+            if (!email.equals("")) {
+                this.email = email;
+            }
+
+            if (contactnumber != -1) {
+                this.contactnumber = contactnumber;
+            }
+
+            if (unitnumber != -1) {
+                this.unitnumber = unitnumber;
+            }
+
+            statement.setString(1, this.lastname);
+            statement.setString(2, this.middlename);
+            statement.setString(3, this.firstname);
+            statement.setString(4, this.dateofbirth);
+            statement.setString(5, this.gender.name());
+            statement.setString(6, this.email);
+            statement.setInt(7, this.contactnumber);
+            statement.setInt(8, this.unitnumber);
+
 
             statement.executeUpdate();
             statement.close();
