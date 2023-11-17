@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DB_Complaints_src;
+package src;
 
 /**
  *
  * @author Jalene Siazon
  */
 public enum Undertaking {
-    
+    Y,N
 }

@@ -1,4 +1,4 @@
-package DB_Complaints_src;
+package src;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -19,7 +19,7 @@ public class Infrastructure {
         
     public int infrastructureid;
     public String infrastructurename;
-    public InfrastructureType infrastructuretype; 
+    public InfrastructureType infrastructuretype;
     public Status status;
     
     public ArrayList<Integer> infrastructure_idlist = new ArrayList<> ();
@@ -57,5 +57,9 @@ public class Infrastructure {
             System.out.println(e.getMessage());
             return 0;
         }
+    }
+    
+    public static void main(String args[]){
+
     }
 }

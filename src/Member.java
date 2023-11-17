@@ -1,4 +1,4 @@
-package DB_Complaints_src;
+package src;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -11,10 +11,9 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Aaron Ace Toledo
+ * @author ccslearner
  */
 public class Member {
-
 
     public String   dbpath = "";
 
@@ -68,9 +67,11 @@ public class Member {
                 baseId = Integer.valueOf(results.getString("newMemberId"));
             }
 
+            memberid = baseId;
+
             statement = conn.prepareStatement("INSERT INTO member VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-            statement.setInt(1, baseId);
+            statement.setInt(1, memberid);
             statement.setString(2, lastname);
             statement.setString(3, middlename);
             statement.setString(4, firstname);
@@ -135,7 +136,6 @@ public class Member {
             statement.setString(6, this.email);
             statement.setInt(7, this.contactnumber);
             statement.setInt(8, this.unitnumber);
-            statement.setInt(9, this.memberid);
 
 
             statement.executeUpdate();

@@ -17,7 +17,6 @@
         <jsp:useBean id="personnelid" class="DB_Complaints_src.PeopleRecords" scope="session"/>
         <%
             int id = Integer.parseInt(request.getParameter("getid"));
-            Member copy = new Member();
             
             boolean exists = personnelid.memberExists(id);
             

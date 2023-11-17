@@ -1,4 +1,4 @@
-package DB_Complaints_src;
+package src;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
