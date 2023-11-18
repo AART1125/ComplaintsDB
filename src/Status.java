@@ -8,7 +8,9 @@
  *
  * @author ccslearner
  */
-public enum Type {
-    P,
-    I
-}
+public enum Status {
+        F, // filed
+        R, // under review
+        S, // resolved
+        U  // unresolved
+    }

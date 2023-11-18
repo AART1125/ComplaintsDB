@@ -8,7 +8,7 @@
  *
  * @author ccslearner
  */
-public enum Type {
-    P,
-    I
+public enum Personnel_Involved {
+    S,
+    M
 }
