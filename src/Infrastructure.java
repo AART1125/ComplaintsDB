@@ -15,7 +15,7 @@ import java.util.*;
 public class Infrastructure {
     
     //fields of infrastructure
-    private String dbpath = "";
+    private String dbpath = "jdbc:mysql://localhost:3306/dbapp?user=root&password=12345678&useTimezone=true&serverTimezone=UTC&useSSL=false";
         
     public int infrastructureid;
     public String infrastructurename;
@@ -29,25 +29,27 @@ public class Infrastructure {
     
     public Infrastructure () {}
         
-    public int register_infrastructure(){
+     public int register_infrastructure(){
         
         try{
-            Connection conn = DriverManager.getConnection(dbpath);
+            Connection conn;
+            conn = DriverManager.getConnection(dbpath);
+            System.out.println("Connection Successful");
             
-            PreparedStatement pstmt = conn.prepareStatement("Select MAX(infrastructure_id) + 1 AS newID FROM infrastructure");
-            ResultSet rst = pstmt.executeQuery();
+            PreparedStatement statement = conn.prepareStatement("Select MAX(infrastructure_id) + 1 AS newID FROM infrastructure");
+            ResultSet rst = statement.executeQuery();
             while(rst.next()){
                 infrastructureid = rst.getInt("newID");
             }
             
-            pstmt = conn.prepareStatement("INSERT INTO infrastructure (infrastructureid, infrastructurename, infrastructuretype, status) VALUE(?,?,?,?)");
-            pstmt.setInt(1,infrastructureid);
-            pstmt.setString(2,infrastructurename);
-            pstmt.setString(3,infrastructuretype.name());
-            pstmt.setString(4,status.name());//should there be a default?
-            pstmt.executeUpdate();
+            statement = conn.prepareStatement("INSERT INTO infrastructure (infrastructureid, infrastructurename, infrastructuretype, status) VALUE(?,?,?,?)");
+            statement.setInt(1,infrastructureid);
+            statement.setString(2,infrastructurename);
+            statement.setString(3,infrastructuretype.name());
+            statement.setString(4,status.name());
+            statement.executeUpdate();
             
-            pstmt.close();
+            statement.close();
             conn.close();
             
             System.out.println("Success");
@@ -56,6 +58,69 @@ public class Infrastructure {
         }catch(Exception e){
             System.out.println(e.getMessage());
             return 0;
+        }
+    }
+    
+    public boolean delete_infrastructure(){
+        try {
+            Connection conn = DriverManager.getConnection(dbpath);
+            PreparedStatement statement = conn.prepareStatement("DELETE FROM infrastructure i WHERE i.infrastructureid=?");
+            statement.setInt(1, infrastructureid);
+
+            statement.executeUpdate();
+            
+            statement.close();
+            conn.close();
+            
+            return true;
+            
+        } catch (SQLException e) {
+            
+            return false;
+            
+        }
+    }
+    
+    public boolean modify_personnel(){
+        try {
+            Connection conn = DriverManager.getConnection(dbpath);
+            PreparedStatement statement = conn.prepareStatement("UPDATE infrastructure SET infrastructureid=?, infrastructurename=?, infrastructuretype=?, status=?");
+
+            statement.setInt(1,infrastructureid);
+            statement.setString(2,infrastructurename);
+            statement.setString(3,infrastructuretype.name());
+            statement.setString(4,status.name());
+
+            statement.executeUpdate();
+            
+            statement.close();
+            conn.close();
+            
+            return true;
+            
+        } catch (SQLException e) {
+            
+            return false;
+            
+        }
+    }
+    
+    public void get_infrastructure(){
+        try {
+            Connection conn = DriverManager.getConnection(dbpath);
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM infrastructure i WHERE i.infrastructureid=?");
+            statement.setInt(1, infrastructureid);
+            ResultSet results = statement.executeQuery();
+
+            while (results.next()) {
+                infrastructureid = results.getInt("infrastructureid");
+                infrastructurename = results.getString("infrastructurename");
+                infrastructuretype = InfrastructureType.valueOf(results.getString("infrastructuretype"));
+                status = Status.valueOf(results.getString("status"));
+            }
+
+        } catch (SQLException e) {
+               
         }
     }
 }
