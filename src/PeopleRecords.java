@@ -14,7 +14,7 @@ package src;
 import java.sql.*;
 import java.util.ArrayList;
 public class PeopleRecords {
-    private String           dbPath = "";
+    private String           dbPath = "jdbc:mysql://localhost:3306/dbapp?user=root&password=12345678&useTimezone=true&serverTimezone=UTC&useSSL=false";
 
     public ArrayList<Member> member_list = list_members();
     public ArrayList<Member> member_male_list = list_male_members();
@@ -26,11 +26,14 @@ public class PeopleRecords {
     public ArrayList<Personnel> personnel_maintenance_list = list_maintenance_personnel();
     public ArrayList<Personnel> personnel_male_list = list_male_personnel();
     public ArrayList<Personnel> personnel_female_list = list_female_personnel();
-
+    
+    public PeopleRecords() {}
+    
     public boolean memberExists(int memberId){
         try {
             Connection conn = DriverManager.getConnection(dbPath);
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM member WHERE memberid = ?");
+            statement.setInt(1, memberId);
             ResultSet results = statement.executeQuery();
 
             if (results.next()) {
@@ -55,28 +58,30 @@ public class PeopleRecords {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM member");
             ResultSet memberinfo = statement.executeQuery();
 
-            String lname, mname, fname, dateofbirth, gender, email;
-            int contactnum,unitnum,memberId;
+            String lname, mname, fname, password, dateofbirth, gender, email, contactnum;
+            int unitnum,memberId;
             
             while (memberinfo.next()) {
                 memberId = memberinfo.getInt("memberid");
                 lname = memberinfo.getString("lastname");
                 mname = memberinfo.getString("middlename");
                 fname = memberinfo.getString("firstname");
-                dateofbirth = memberinfo.getString("dateofbirth");
+                password = memberinfo.getString("password");
+                dateofbirth = memberinfo.getDate("dateofbirth").toLocalDate().toString();
                 gender = memberinfo.getString("gender");
                 Gender gen = Gender.valueOf(gender);
                 email = memberinfo.getString("email");
-                contactnum = memberinfo.getInt("contactnum");
-                unitnum = memberinfo.getInt("unitnum");
+                contactnum = memberinfo.getString("contactnumber");
+                unitnum = memberinfo.getInt("unitnumber");
 
-                memberlist.add(new Member(memberId, lname, mname, fname, dateofbirth, gen, email, contactnum, unitnum));
+                memberlist.add(new Member(memberId, lname, mname, fname, password, dateofbirth, gen, email, contactnum, unitnum));
             }
 
             conn.close();
             
             return memberlist;
         } catch (SQLException e){
+            System.err.print(e);
             return null;
         }
     }
@@ -88,22 +93,23 @@ public class PeopleRecords {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM member WHERE gender = 'M'");
             ResultSet memberinfo = statement.executeQuery();
 
-            String lname, mname, fname, dateofbirth, gender, email;
-            int contactnum,unitnum,memberId;
+            String lname, mname, fname, password, dateofbirth, gender, email, contactnum;
+            int unitnum,memberId;
             
             while (memberinfo.next()) {
                 memberId = memberinfo.getInt("memberid");
                 lname = memberinfo.getString("lastname");
                 mname = memberinfo.getString("middlename");
                 fname = memberinfo.getString("firstname");
+                password = memberinfo.getString("password");
                 dateofbirth = memberinfo.getString("dateofbirth");
                 gender = memberinfo.getString("gender");
                 Gender gen = Gender.valueOf(gender);
                 email = memberinfo.getString("email");
-                contactnum = memberinfo.getInt("contactnum");
+                contactnum = memberinfo.getString("contactnum");
                 unitnum = memberinfo.getInt("unitnum");
 
-                memberlist.add(new Member(memberId, lname, mname, fname, dateofbirth, gen, email, contactnum, unitnum));
+                memberlist.add(new Member(memberId, lname, mname, fname, password, dateofbirth, gen, email, contactnum, unitnum));
             }
 
             conn.close();
@@ -121,22 +127,23 @@ public class PeopleRecords {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM member WHERE gender = 'F'");
             ResultSet memberinfo = statement.executeQuery();
 
-            String lname, mname, fname, dateofbirth, gender, email;
-            int contactnum,unitnum,memberId;
+            String lname, mname, fname, password, dateofbirth, gender, email, contactnum;
+            int unitnum,memberId;
             
             while (memberinfo.next()) {
                 memberId = memberinfo.getInt("memberid");
                 lname = memberinfo.getString("lastname");
                 mname = memberinfo.getString("middlename");
                 fname = memberinfo.getString("firstname");
+                password = memberinfo.getString("password");
                 dateofbirth = memberinfo.getString("dateofbirth");
                 gender = memberinfo.getString("gender");
                 Gender gen = Gender.valueOf(gender);
                 email = memberinfo.getString("email");
-                contactnum = memberinfo.getInt("contactnum");
+                contactnum = memberinfo.getString("contactnum");
                 unitnum = memberinfo.getInt("unitnum");
 
-                memberlist.add(new Member(memberId, lname, mname, fname, dateofbirth, gen, email, contactnum, unitnum));
+                memberlist.add(new Member(memberId, lname, mname, fname, password, dateofbirth, gen, email, contactnum, unitnum));
             }
 
             conn.close();
@@ -151,6 +158,7 @@ public class PeopleRecords {
         try {
             Connection conn = DriverManager.getConnection(dbPath);
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE personnelid = ?");
+            statement.setInt(1, personnelId);
             ResultSet results = statement.executeQuery();
 
             if (results.next()) {
@@ -395,4 +403,5 @@ public class PeopleRecords {
             return null;
         }
     }
+     
 }

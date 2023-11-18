@@ -12,15 +12,17 @@ package src;
 
 import java.sql.*;
 import java.util.*;
+import java.lang.NumberFormatException;
 
 public class Personnel {
 
-    public String   dbpath = "";
+    private String   dbpath = "jdbc:mysql://localhost:3306/dbapp?user=root&password=12345678&useTimezone=true&serverTimezone=UTC&useSSL=false";
 
-    public int personnelid;
+    public int personnelid = 2000;
     public String lastname;
     public String middlename;
     public String firstname;
+    public String password;
     public String dateofbirth;
     public Gender gender; 
     public String email;
@@ -64,29 +66,32 @@ public class Personnel {
     }
 
     public boolean register_personnel(){
-        int baseId = 1000;
         try {
             Connection conn = DriverManager.getConnection(dbpath);
-            PreparedStatement statement = conn.prepareStatement("SELECT MAX(personnelId) + 1 as newPersonnelId FROM personnel");
+            PreparedStatement statement = conn.prepareStatement("SELECT MAX(personnelid) + 1 as 'newPersonnelId' FROM personnel");
             ResultSet results = statement.executeQuery();
 
-            while (results.next()) {
-                baseId = Integer.valueOf(results.getString("newPersonnelId"));
+            if (results.next()) {
+                try {
+                    personnelid = Integer.valueOf(results.getString("newPersonnelId"));
+                } catch (NumberFormatException e){}
             }
+            
+            statement = conn.prepareStatement("INSERT INTO personnel VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            
 
-            statement = conn.prepareStatement("INSERT INTO member VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-            statement.setInt(1, baseId);
+            statement.setInt(1, personnelid);
             statement.setString(2, lastname);
             statement.setString(3, middlename);
             statement.setString(4, firstname);
+            statement.setString(5, password);
             statement.setString(5, dateofbirth);
             statement.setString(6, gender.name());
             statement.setString(7, email);
             statement.setInt(8, contactnumber);
             statement.setString(9, undertaking.name());
             statement.setString(10, hiredate);
-            statement.setString(13, position.name());
+            statement.setString(11, position.name());
 
             statement.executeUpdate();
             statement.close();
@@ -94,6 +99,7 @@ public class Personnel {
 
             return true;
         } catch (SQLException e){
+            System.err.print(e);
             return false;
         }
     }
@@ -127,7 +133,7 @@ public class Personnel {
     public boolean delete_personnel(){
         try {
             Connection conn = DriverManager.getConnection(dbpath);
-            PreparedStatement statement = conn.prepareStatement("DELETE FROM personnel p WHERE p.personnelid=?");
+            PreparedStatement statement = conn.prepareStatement("DELETE FROM personnel WHERE personnelid=?");
             statement.setInt(1, personnelid);
 
             statement.executeUpdate();
@@ -159,13 +165,16 @@ public class Personnel {
                 hiredate = results.getString("hiredate");
                 position = Position.valueOf(results.getString("position"));
             }
+            
+            statement.executeUpdate();
+            statement.close();
+            conn.close();
 
         } catch (SQLException e) {
 
         }
     }
+    
+    
 
-    public static void main(String[] args) {
-        
-    }
 }
