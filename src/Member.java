@@ -26,7 +26,7 @@ public class Member {
     public String   dateofbirth;
     public Gender   gender;
     public String   email;
-    public String      contactnumber;
+    public String   contactnumber;
     public int      unitnumber;
 
     public ArrayList<Integer> member_idList = new ArrayList<Integer>();

@@ -41,6 +41,7 @@ public class Personnel {
      * @param lastname
      * @param middlename
      * @param firstname
+     * @param password
      * @param birthday
      * @param gender
      * @param email
@@ -51,11 +52,12 @@ public class Personnel {
      * @param availtime
      * @param position
      */
-    public Personnel (int personnelid,String lastname,String middlename,String firstname,String dateofbirth,Gender gender, String email, int contactnumber, Undertaking undertaking, String hiredate, Position position){
+    public Personnel (int personnelid,String lastname,String middlename,String firstname, String password, String dateofbirth,Gender gender, String email, int contactnumber, Undertaking undertaking, String hiredate, Position position){
         this.personnelid = personnelid;
         this.lastname = lastname;
         this.middlename = middlename;
         this.firstname = firstname;
+        this.password = password;
         this.dateofbirth = dateofbirth;
         this.gender = gender;
         this.email = email;
@@ -85,13 +87,13 @@ public class Personnel {
             statement.setString(3, middlename);
             statement.setString(4, firstname);
             statement.setString(5, password);
-            statement.setString(5, dateofbirth);
-            statement.setString(6, gender.name());
-            statement.setString(7, email);
-            statement.setInt(8, contactnumber);
-            statement.setString(9, undertaking.name());
-            statement.setString(10, hiredate);
-            statement.setString(11, position.name());
+            statement.setString(6, dateofbirth);
+            statement.setString(7, gender.name());
+            statement.setString(8, email);
+            statement.setInt(9, contactnumber);
+            statement.setString(10, undertaking.name());
+            statement.setString(11, hiredate);
+            statement.setString(12, position.name());
 
             statement.executeUpdate();
             statement.close();
@@ -112,14 +114,15 @@ public class Personnel {
             statement.setString(1, lastname);
             statement.setString(2, middlename);
             statement.setString(3, firstname);
-            statement.setString(4, dateofbirth);
-            statement.setString(5, gender.name());
-            statement.setString(6, email);
-            statement.setInt(7, contactnumber);
-            statement.setString(8, undertaking.name());
-            statement.setString(9, hiredate);
-            statement.setString(12, position.name());
-            statement.setInt(13, personnelid);
+            statement.setString(4, password);
+            statement.setString(5, dateofbirth);
+            statement.setString(6, gender.name());
+            statement.setString(7, email);
+            statement.setInt(8, contactnumber);
+            statement.setString(9, undertaking.name());
+            statement.setString(10, hiredate);
+            statement.setString(11, position.name());
+            statement.setInt(12, personnelid);
 
             statement.executeUpdate();
             statement.close();
@@ -145,7 +148,7 @@ public class Personnel {
         }
     }
 
-    public void get_member(){
+    public void get_personnel(){
         try {
             Connection conn = DriverManager.getConnection(dbpath);
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE personnelid=?");
@@ -157,6 +160,7 @@ public class Personnel {
                 lastname = results.getString("lastname");
                 middlename = results.getString("middlename");
                 firstname = results.getString("firstname");
+                password = results.getString("password");
                 dateofbirth = results.getString("dateofbirth");
                 gender = Gender.valueOf(results.getString("gender"));
                 email = results.getString("email");
