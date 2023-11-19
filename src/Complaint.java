@@ -1,3 +1,4 @@
+package src;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -16,8 +17,7 @@ public class Complaint {
     // fields of complaint
     public int complaintid;
     public int complainant;
-    public Date dateofcomplaintfiling;
-    public Date dateofoffense;
+    public String dateofcomplaintfiling;
     public Type typeofcomplaint;
     public Status statusofcomplaint; 
     public String description;
@@ -39,14 +39,13 @@ public class Complaint {
     // fields for maintainance infra complaint
     public int maintainincharge;
     
-    public String dbconn = "\"jdbc:mysql://localhost:3306/INSERTDBNAMEHERE?user=root&password=12345678&useTimezone=true&serverTimezone=UTC&useSSL=false\";";
+    private String dbconn = "jdbc:mysql://localhost:3306/INSERTDBNAMEHERE?user=root&password=12345678&useTimezone=true&serverTimezone=UTC&useSSL=false";
     
     
     public Complaint(int complaintid, int complainant, String dateofcomplaintfiling, String dateofoffense, String typeofcomplaint, String personnelrequired, int complaintsubject, String statusofcomplaint, String description) {
         this.complaintid = complaintid;
         this.complainant = complainant;
-        this.dateofcomplaintfiling = Date.valueOf(dateofcomplaintfiling);
-        this.dateofoffense = Date.valueOf(dateofoffense);
+        this.dateofcomplaintfiling = dateofcomplaintfiling;
         this.statusofcomplaint = Status.valueOf(statusofcomplaint);
         
         //Type.valueOf("P")
