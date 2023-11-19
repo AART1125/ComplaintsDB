@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package src;
+package DB_Complaints_src;
 
  /**
  *
@@ -26,12 +26,21 @@ public class Personnel {
     public String dateofbirth;
     public Gender gender; 
     public String email;
-    public int contactnumber;
+    public String contactnumber;
     public Undertaking undertaking;
     public String hiredate; 
     public Position position; 
 
     public ArrayList<Integer> personnel_idList = new ArrayList<Integer>();
+    
+    public static void main(String[] args){
+        Personnel hi = new Personnel();
+        hi.personnelid = 2001;
+        hi.get_personnel();
+        hi.firstname = "lola";
+        System.out.println(hi.modify_personnel());
+        
+    }
 
     public Personnel() {}
     
@@ -52,7 +61,7 @@ public class Personnel {
      * @param availtime
      * @param position
      */
-    public Personnel (int personnelid,String lastname,String middlename,String firstname, String password, String dateofbirth,Gender gender, String email, int contactnumber, Undertaking undertaking, String hiredate, Position position){
+    public Personnel (int personnelid, String lastname, String middlename, String firstname, String password, String dateofbirth, Gender gender, String email, String contactnumber, Undertaking undertaking, String hiredate, Position position){
         this.personnelid = personnelid;
         this.lastname = lastname;
         this.middlename = middlename;
@@ -90,7 +99,7 @@ public class Personnel {
             statement.setString(6, dateofbirth);
             statement.setString(7, gender.name());
             statement.setString(8, email);
-            statement.setInt(9, contactnumber);
+            statement.setString(9, contactnumber);
             statement.setString(10, undertaking.name());
             statement.setString(11, hiredate);
             statement.setString(12, position.name());
@@ -109,7 +118,7 @@ public class Personnel {
     public boolean modify_personnel(){
         try {
             Connection conn = DriverManager.getConnection(dbpath);
-            PreparedStatement statement = conn.prepareStatement("UPDATE personnel SET lastname=?, middlename=?, firstname=?, dateofbirth=?, gender=?, email=?, contactnumber=?, undertaking=?, hiredate=?, availdays=?, availtime=?, position=? WHERE personnelid = ?");
+            PreparedStatement statement = conn.prepareStatement("UPDATE personnel SET lastname=?, middlename=?, firstname=?, password=?, dateofbirth=?, gender=?, email=?, contactnumber=?, undertaking=?, hiredate=?, position=? WHERE personnelid = ?");
 
             statement.setString(1, lastname);
             statement.setString(2, middlename);
@@ -118,10 +127,11 @@ public class Personnel {
             statement.setString(5, dateofbirth);
             statement.setString(6, gender.name());
             statement.setString(7, email);
-            statement.setInt(8, contactnumber);
+            statement.setString(8, contactnumber);
             statement.setString(9, undertaking.name());
             statement.setString(10, hiredate);
             statement.setString(11, position.name());
+            
             statement.setInt(12, personnelid);
 
             statement.executeUpdate();
@@ -129,6 +139,7 @@ public class Personnel {
             conn.close();
             return true;
         } catch (SQLException e) {
+            System.err.println(e);
             return false;
         }
     }
@@ -164,8 +175,9 @@ public class Personnel {
                 dateofbirth = results.getString("dateofbirth");
                 gender = Gender.valueOf(results.getString("gender"));
                 email = results.getString("email");
-                contactnumber = results.getInt("contactnumber");
+                contactnumber = results.getString("contactnumber");
                 undertaking = Undertaking.valueOf(results.getString("undertaking"));
+                System.out.print(undertaking + " "  + contactnumber);
                 hiredate = results.getString("hiredate");
                 position = Position.valueOf(results.getString("position"));
             }
@@ -175,10 +187,7 @@ public class Personnel {
             conn.close();
 
         } catch (SQLException e) {
-
+            System.err.print(e);
         }
     }
-    
-    
-
 }

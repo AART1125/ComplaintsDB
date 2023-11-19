@@ -1,4 +1,4 @@
-package src;
+package DB_Complaints_src;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -29,6 +29,14 @@ public class PeopleRecords {
     
     public PeopleRecords() {}
     
+    public static void main(String[] args){
+        PeopleRecords hi = new PeopleRecords();
+        
+        for(Member member: hi.member_list){
+            System.out.println(member.memberid);
+        }
+    }
+    
     public boolean memberExists(int memberId){
         try {
             Connection conn = DriverManager.getConnection(dbPath);
@@ -58,8 +66,9 @@ public class PeopleRecords {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM member");
             ResultSet memberinfo = statement.executeQuery();
 
-            String lname, mname, fname, password, dateofbirth, gender, email, contactnum;
+            String lname, mname, fname, password, dateofbirth, email, contactnum;
             int unitnum,memberId;
+            Gender gender;
             
             while (memberinfo.next()) {
                 memberId = memberinfo.getInt("memberid");
@@ -67,14 +76,13 @@ public class PeopleRecords {
                 mname = memberinfo.getString("middlename");
                 fname = memberinfo.getString("firstname");
                 password = memberinfo.getString("password");
-                dateofbirth = memberinfo.getDate("dateofbirth").toLocalDate().toString();
-                gender = memberinfo.getString("gender");
-                Gender gen = Gender.valueOf(gender);
+                dateofbirth = memberinfo.getString("dateofbirth");
+                gender = Gender.valueOf(memberinfo.getString("gender"));
                 email = memberinfo.getString("email");
                 contactnum = memberinfo.getString("contactnumber");
                 unitnum = memberinfo.getInt("unitnumber");
 
-                memberlist.add(new Member(memberId, lname, mname, fname, password, dateofbirth, gen, email, contactnum, unitnum));
+                memberlist.add(new Member(memberId, lname, mname, fname, password, dateofbirth, gender, email, contactnum, unitnum));
             }
 
             conn.close();
@@ -176,7 +184,7 @@ public class PeopleRecords {
         }
     }
 
-        public boolean isPersonnelAdmin(int personnelId){
+    public boolean isPersonnelAdmin(int personnelId){
         try {
             Connection conn = DriverManager.getConnection(dbPath);
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel p JOIN admin a ON p.personnelid = a.personnelid WHERE a.personnelid = ? AND p.personnelid = ?");
@@ -205,29 +213,30 @@ public class PeopleRecords {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel");
             ResultSet personnelinfo = statement.executeQuery();
 
-            String lname, mname, fname, pw, dateofbirth, gender, email, undertaking, hiredate, position;
-            int contactnum, personnelid;
+            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, position, contactnum, password;
+            int personnelid;
             
             while (personnelinfo.next()) {
                 personnelid = personnelinfo.getInt("personnelid");
                 lname = personnelinfo.getString("lastname");
                 mname = personnelinfo.getString("middlename");
                 fname = personnelinfo.getString("firstname");
-                pw = personnelinfo.getString("password");
+                password = personnelinfo.getString("password");
                 dateofbirth = personnelinfo.getString("dateofbirth");
                 gender = personnelinfo.getString("gender");
                 Gender gen = Gender.valueOf(gender);
                 email = personnelinfo.getString("email");
-                contactnum = personnelinfo.getInt("contactnum");
+                contactnum = personnelinfo.getString("contactnum");
                 undertaking = personnelinfo.getString("undertaking");
                 Undertaking undertakingValue = Undertaking.valueOf(undertaking);
                 hiredate = personnelinfo.getString("hiredate");
                 position = personnelinfo.getString("position");
                 Position positionValue = Position.valueOf(position);
 
-                personnellist.add(new Personnel(personnelid, lname, mname, fname, pw, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
+                personnellist.add(new Personnel(personnelid, lname, mname, fname, password, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
 
             }
+
             conn.close();
             
             return personnellist;
@@ -236,6 +245,127 @@ public class PeopleRecords {
         }
     }
 
+    public ArrayList<Personnel> list_personnel_by_lastname(String lastname){
+        ArrayList<Personnel> personnellist = new ArrayList<>();
+        try {
+            Connection conn = DriverManager.getConnection(dbPath);
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE lastname = ?");
+            statement.setString(1, lastname);
+            ResultSet personnelinfo = statement.executeQuery();
+
+            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, position, contactnum, password;
+            int personnelid;
+            
+            while (personnelinfo.next()) {
+                personnelid = personnelinfo.getInt("personnelid");
+                lname = personnelinfo.getString("lastname");
+                mname = personnelinfo.getString("middlename");
+                fname = personnelinfo.getString("firstname");
+                password = personnelinfo.getString("password");
+                dateofbirth = personnelinfo.getString("dateofbirth");
+                gender = personnelinfo.getString("gender");
+                Gender gen = Gender.valueOf(gender);
+                email = personnelinfo.getString("email");
+                contactnum = personnelinfo.getString("contactnum");
+                undertaking = personnelinfo.getString("undertaking");
+                Undertaking undertakingValue = Undertaking.valueOf(undertaking);
+                hiredate = personnelinfo.getString("hiredate");
+                position = personnelinfo.getString("position");
+                Position positionValue = Position.valueOf(position);
+
+                personnellist.add(new Personnel(personnelid, lname, mname, fname, password, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
+
+            }
+
+            conn.close();
+            
+            return personnellist;
+        } catch (SQLException e){
+            return null;
+        }
+    }
+
+        public ArrayList<Personnel> list_personnel_by_firstname(String firstname){
+        ArrayList<Personnel> personnellist = new ArrayList<>();
+        try {
+            Connection conn = DriverManager.getConnection(dbPath);
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE firstname = ?");
+            statement.setString(1, firstname);
+            ResultSet personnelinfo = statement.executeQuery();
+
+            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, position, contactnum, password;
+            int personnelid;
+            
+            while (personnelinfo.next()) {
+                personnelid = personnelinfo.getInt("personnelid");
+                lname = personnelinfo.getString("lastname");
+                mname = personnelinfo.getString("middlename");
+                fname = personnelinfo.getString("firstname");
+                password = personnelinfo.getString("password");
+                dateofbirth = personnelinfo.getString("dateofbirth");
+                gender = personnelinfo.getString("gender");
+                Gender gen = Gender.valueOf(gender);
+                email = personnelinfo.getString("email");
+                contactnum = personnelinfo.getString("contactnum");
+                undertaking = personnelinfo.getString("undertaking");
+                Undertaking undertakingValue = Undertaking.valueOf(undertaking);
+                hiredate = personnelinfo.getString("hiredate");
+                position = personnelinfo.getString("position");
+                Position positionValue = Position.valueOf(position);
+
+                personnellist.add(new Personnel(personnelid, lname, mname, fname, password, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
+
+            }
+
+            conn.close();
+            
+            return personnellist;
+        } catch (SQLException e){
+            return null;
+        }
+    }
+
+    public ArrayList<Personnel> list_personnel_by_middlename(String middlename){
+        ArrayList<Personnel> personnellist = new ArrayList<>();
+        try {
+            Connection conn = DriverManager.getConnection(dbPath);
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE middlename = ?");
+            statement.setString(1, middlename);
+            ResultSet personnelinfo = statement.executeQuery();
+
+            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, position, contactnum, password;
+            int personnelid;
+            
+            while (personnelinfo.next()) {
+                personnelid = personnelinfo.getInt("personnelid");
+                lname = personnelinfo.getString("lastname");
+                mname = personnelinfo.getString("middlename");
+                fname = personnelinfo.getString("firstname");
+                password = personnelinfo.getString("password");
+                dateofbirth = personnelinfo.getString("dateofbirth");
+                gender = personnelinfo.getString("gender");
+                Gender gen = Gender.valueOf(gender);
+                email = personnelinfo.getString("email");
+                contactnum = personnelinfo.getString("contactnum");
+                undertaking = personnelinfo.getString("undertaking");
+                Undertaking undertakingValue = Undertaking.valueOf(undertaking);
+                hiredate = personnelinfo.getString("hiredate");
+                position = personnelinfo.getString("position");
+                Position positionValue = Position.valueOf(position);
+
+                personnellist.add(new Personnel(personnelid, lname, mname, fname, password, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
+
+            }
+
+            conn.close();
+            
+            return personnellist;
+        } catch (SQLException e){
+            return null;
+        }
+    }
+
+
     public ArrayList<Personnel> list_security_personnel(){
         ArrayList<Personnel> personnellist = new ArrayList<>();
         try {
@@ -243,29 +373,30 @@ public class PeopleRecords {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE position = 'S'");
             ResultSet personnelinfo = statement.executeQuery();
 
-            String lname, mname, fname, pw, dateofbirth, gender, email, undertaking, hiredate, position;
-            int contactnum, personnelid;
+            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, position, contactnum, password;
+            int personnelid;
             
             while (personnelinfo.next()) {
                 personnelid = personnelinfo.getInt("personnelid");
                 lname = personnelinfo.getString("lastname");
                 mname = personnelinfo.getString("middlename");
                 fname = personnelinfo.getString("firstname");
-                pw = personnelinfo.getString("password");
+                password = personnelinfo.getString("password");
                 dateofbirth = personnelinfo.getString("dateofbirth");
                 gender = personnelinfo.getString("gender");
                 Gender gen = Gender.valueOf(gender);
                 email = personnelinfo.getString("email");
-                contactnum = personnelinfo.getInt("contactnum");
+                contactnum = personnelinfo.getString("contactnum");
                 undertaking = personnelinfo.getString("undertaking");
                 Undertaking undertakingValue = Undertaking.valueOf(undertaking);
                 hiredate = personnelinfo.getString("hiredate");
                 position = personnelinfo.getString("position");
                 Position positionValue = Position.valueOf(position);
 
-                personnellist.add(new Personnel(personnelid, lname, mname, fname, pw, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
+                personnellist.add(new Personnel(personnelid, lname, mname, fname, password, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
 
             }
+
             conn.close();
             
             return personnellist;
@@ -281,27 +412,28 @@ public class PeopleRecords {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE position = 'A'");
             ResultSet personnelinfo = statement.executeQuery();
 
-            String lname, mname, fname, pw, dateofbirth, gender, email, undertaking, hiredate, position;
-            int contactnum, personnelid;
+            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, position, contactnum, password;
+            int personnelid;
             
             while (personnelinfo.next()) {
                 personnelid = personnelinfo.getInt("personnelid");
                 lname = personnelinfo.getString("lastname");
                 mname = personnelinfo.getString("middlename");
                 fname = personnelinfo.getString("firstname");
-                pw = personnelinfo.getString("password");
+                password = personnelinfo.getString("password");
                 dateofbirth = personnelinfo.getString("dateofbirth");
                 gender = personnelinfo.getString("gender");
                 Gender gen = Gender.valueOf(gender);
                 email = personnelinfo.getString("email");
-                contactnum = personnelinfo.getInt("contactnum");
+                contactnum = personnelinfo.getString("contactnum");
                 undertaking = personnelinfo.getString("undertaking");
                 Undertaking undertakingValue = Undertaking.valueOf(undertaking);
                 hiredate = personnelinfo.getString("hiredate");
                 position = personnelinfo.getString("position");
                 Position positionValue = Position.valueOf(position);
 
-                personnellist.add(new Personnel(personnelid, lname, mname, fname, pw, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
+                personnellist.add(new Personnel(personnelid, lname, mname, fname, password, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
+
             }
 
             conn.close();
@@ -319,27 +451,28 @@ public class PeopleRecords {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE position = 'M'");
             ResultSet personnelinfo = statement.executeQuery();
 
-            String lname, mname, fname, pw, dateofbirth, gender, email, undertaking, hiredate, position;
-            int contactnum, personnelid;
+            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, position, contactnum, password;
+            int personnelid;
             
             while (personnelinfo.next()) {
                 personnelid = personnelinfo.getInt("personnelid");
                 lname = personnelinfo.getString("lastname");
                 mname = personnelinfo.getString("middlename");
                 fname = personnelinfo.getString("firstname");
-                pw = personnelinfo.getString("password");
+                password = personnelinfo.getString("password");
                 dateofbirth = personnelinfo.getString("dateofbirth");
                 gender = personnelinfo.getString("gender");
                 Gender gen = Gender.valueOf(gender);
                 email = personnelinfo.getString("email");
-                contactnum = personnelinfo.getInt("contactnum");
+                contactnum = personnelinfo.getString("contactnum");
                 undertaking = personnelinfo.getString("undertaking");
                 Undertaking undertakingValue = Undertaking.valueOf(undertaking);
                 hiredate = personnelinfo.getString("hiredate");
                 position = personnelinfo.getString("position");
                 Position positionValue = Position.valueOf(position);
 
-                personnellist.add(new Personnel(personnelid, lname, mname, fname, pw, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
+                personnellist.add(new Personnel(personnelid, lname, mname, fname, password, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
+
             }
 
             conn.close();
@@ -349,6 +482,7 @@ public class PeopleRecords {
             return null;
         }
     }
+
     public ArrayList<Personnel> list_male_personnel(){
         ArrayList<Personnel> personnellist = new ArrayList<>();
         try {
@@ -356,27 +490,28 @@ public class PeopleRecords {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE gender = 'M'");
             ResultSet personnelinfo = statement.executeQuery();
 
-            String lname, mname, fname, pw, dateofbirth, gender, email, undertaking, hiredate, position;
-            int contactnum, personnelid;
+            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, position, contactnum, password;
+            int personnelid;
             
             while (personnelinfo.next()) {
                 personnelid = personnelinfo.getInt("personnelid");
                 lname = personnelinfo.getString("lastname");
                 mname = personnelinfo.getString("middlename");
                 fname = personnelinfo.getString("firstname");
-                pw = personnelinfo.getString("password");
+                password = personnelinfo.getString("password");
                 dateofbirth = personnelinfo.getString("dateofbirth");
                 gender = personnelinfo.getString("gender");
                 Gender gen = Gender.valueOf(gender);
                 email = personnelinfo.getString("email");
-                contactnum = personnelinfo.getInt("contactnum");
+                contactnum = personnelinfo.getString("contactnum");
                 undertaking = personnelinfo.getString("undertaking");
                 Undertaking undertakingValue = Undertaking.valueOf(undertaking);
                 hiredate = personnelinfo.getString("hiredate");
                 position = personnelinfo.getString("position");
                 Position positionValue = Position.valueOf(position);
 
-                personnellist.add(new Personnel(personnelid, lname, mname, fname, pw, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
+                personnellist.add(new Personnel(personnelid, lname, mname, fname, password, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
+
             }
 
             conn.close();
@@ -394,27 +529,28 @@ public class PeopleRecords {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM personnel WHERE gender = 'F'");
             ResultSet personnelinfo = statement.executeQuery();
 
-            String lname, mname, fname, pw, dateofbirth, gender, email, undertaking, hiredate, position;
-            int contactnum, personnelid;
+            String lname, mname, fname, dateofbirth, gender, email, undertaking, hiredate, position, contactnum, password;
+            int personnelid;
             
             while (personnelinfo.next()) {
                 personnelid = personnelinfo.getInt("personnelid");
                 lname = personnelinfo.getString("lastname");
                 mname = personnelinfo.getString("middlename");
                 fname = personnelinfo.getString("firstname");
-                pw = personnelinfo.getString("password");
+                password = personnelinfo.getString("password");
                 dateofbirth = personnelinfo.getString("dateofbirth");
                 gender = personnelinfo.getString("gender");
                 Gender gen = Gender.valueOf(gender);
                 email = personnelinfo.getString("email");
-                contactnum = personnelinfo.getInt("contactnum");
+                contactnum = personnelinfo.getString("contactnum");
                 undertaking = personnelinfo.getString("undertaking");
                 Undertaking undertakingValue = Undertaking.valueOf(undertaking);
                 hiredate = personnelinfo.getString("hiredate");
                 position = personnelinfo.getString("position");
                 Position positionValue = Position.valueOf(position);
 
-                personnellist.add(new Personnel(personnelid, lname, mname, fname, pw, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
+                personnellist.add(new Personnel(personnelid, lname, mname, fname, password, dateofbirth, gen, email, contactnum, undertakingValue, hiredate, positionValue));
+
             }
 
             conn.close();
