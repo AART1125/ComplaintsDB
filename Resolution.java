@@ -22,7 +22,9 @@ public class Resolution {
     // for specific type resolutions
     public int complaintid;
     
-    public String dbconn = "\"jdbc:mysql://localhost:3306/INSERTDBNAMEHERE?user=root&password=12345678&useTimezone=true&serverTimezone=UTC&useSSL=false\";";
+    public String dbconn = "\"jdbc:mysql://localhost:3306/dbapp?user=root&password=12345678&useTimezone=true&serverTimezone=UTC&useSSL=false\";";
+    
+    public Resolution() {}
     
     public Resolution(int complaintid, int personnelinvolved, String description) {
         this.resolutionid = 0;
@@ -32,35 +34,8 @@ public class Resolution {
         this.dateofresolution = Date.valueOf(LocalDate.now().toString());
     }
     
-    /*
-    generic resolutions will instead be created AFTER the specialized ones
-    public int create_resolution() {
-        try {
-            Connection conn;
-            conn = DriverManager.getConnection(dbconn);
-            
-            PreparedStatement pstmt = conn.prepareStatement("SELECT MAX(resolutionid) + 1 AS newID FROM resolutions");
-            ResultSet rst = pstmt.executeQuery();
-            
-            while (rst.next()) {
-                resolutionid = rst.getInt("newID");
-            }
-            
-            pstmt = conn.prepareStatement("INSERT INTO resolutions (resolutionid, personnelinvolved, description) VALUE (?,?,?)");
-            pstmt.setInt(1, resolutionid);
-            pstmt.setInt(2, personnelinvolved);
-            pstmt.setString(3, description);
-            
-            pstmt.executeUpdate();
-            
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return 0;
-        }
-    }
-    */
     
-    public int create_security_personnel_resolution() {
+    public boolean create_security_personnel_resolution() {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconn);
@@ -86,15 +61,15 @@ public class Resolution {
            
            pstmt.close();
            conn.close();
-           return 1;
+           return true;
            
        } catch (Exception e) {
            System.out.println(e.getMessage());
-           return 0;
+           return false;
         }
     }
     
-    public int create_maintain_personnel_resolution() {
+    public boolean create_maintain_personnel_resolution() {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconn);
@@ -120,15 +95,15 @@ public class Resolution {
            
            pstmt.close();
            conn.close();
-           return 1;
+           return true;
            
        } catch (Exception e) {
            System.out.println(e.getMessage());
-           return 0;
+           return false;
         }
     }
     
-    public int create_security_infra_resolution() {
+    public boolean create_security_infra_resolution() {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconn);
@@ -154,14 +129,14 @@ public class Resolution {
            
            pstmt.close();
            conn.close();
-           return 1;
+           return true;
        } catch (Exception e) {
            System.out.println(e.getMessage());
-           return 0;
+           return false;
         }
     }
     
-    public int create_maintain_infra_resolutiion() {
+    public boolean create_maintain_infra_resolutiion() {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconn);
@@ -187,14 +162,15 @@ public class Resolution {
            
            pstmt.close();
            conn.close();
-           return 1;
+           return true;
        } catch (Exception e) {
            System.out.println(e.getMessage());
-           return 0;
+           return false;
        }
     }
     
-    public int get_resolution_record() {
+    
+    public boolean get_security_infra_resolution_record() {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconn);
@@ -210,10 +186,103 @@ public class Resolution {
           
            pstmt.close();
            conn.close();
-           return 1;
+           return true;
         } catch (Exception e) {
            System.out.println(e.getMessage());
-           return 0;
+           return false;
+        }
+    }
+    
+    public boolean get_maintain_infra_resolution_record() {
+        try {
+           Connection conn;
+           conn = DriverManager.getConnection(dbconn);
+           
+           PreparedStatement pstmt = conn.prepareStatement("SELECT personnelinvolved, description FROM resolutions WHERE resolutionid=?");
+           pstmt.setInt(1, resolutionid);
+           ResultSet rst = pstmt.executeQuery();
+         
+           while (rst.next()) {
+             personnelinvolved = rst.getInt("personnelinvolved");
+             description = rst.getString("description");
+           }
+          
+           pstmt.close();
+           conn.close();
+           return true;
+        } catch (Exception e) {
+           System.out.println(e.getMessage());
+           return false;
+        }
+    }
+    
+    public boolean get_security_person_resolution_record() {
+        try {
+           Connection conn;
+           conn = DriverManager.getConnection(dbconn);
+           
+           PreparedStatement pstmt = conn.prepareStatement("SELECT personnelinvolved, description FROM resolutions WHERE resolutionid=?");
+           pstmt.setInt(1, resolutionid);
+           ResultSet rst = pstmt.executeQuery();
+         
+           while (rst.next()) {
+             personnelinvolved = rst.getInt("personnelinvolved");
+             description = rst.getString("description");
+           }
+          
+           pstmt.close();
+           conn.close();
+           return true;
+        } catch (Exception e) {
+           System.out.println(e.getMessage());
+           return false;
+        }
+    }
+    
+    public boolean get_maintain_person_resolution_record() {
+        try {
+           Connection conn;
+           conn = DriverManager.getConnection(dbconn);
+           
+           PreparedStatement pstmt = conn.prepareStatement("SELECT personnelinvolved, description FROM resolutions WHERE resolutionid=?");
+           pstmt.setInt(1, resolutionid);
+           ResultSet rst = pstmt.executeQuery();
+         
+           while (rst.next()) {
+             personnelinvolved = rst.getInt("personnelinvolved");
+             description = rst.getString("description");
+           }
+          
+           pstmt.close();
+           conn.close();
+           return true;
+        } catch (Exception e) {
+           System.out.println(e.getMessage());
+           return false;
+        }
+    }
+    
+    
+    public boolean get_resolution_record() {
+        try {
+           Connection conn;
+           conn = DriverManager.getConnection(dbconn);
+           
+           PreparedStatement pstmt = conn.prepareStatement("SELECT personnelinvolved, description FROM resolutions WHERE resolutionid=?");
+           pstmt.setInt(1, resolutionid);
+           ResultSet rst = pstmt.executeQuery();
+         
+           while (rst.next()) {
+             personnelinvolved = rst.getInt("personnelinvolved");
+             description = rst.getString("description");
+           }
+          
+           pstmt.close();
+           conn.close();
+           return true;
+        } catch (Exception e) {
+           System.out.println(e.getMessage());
+           return false;
         }
     }
 }

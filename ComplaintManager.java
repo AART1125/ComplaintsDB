@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package DB_Complaints_src;
 
 /**
  *
@@ -19,20 +20,26 @@ public class ComplaintManager {
     
     /*ArrayLists for lists of all categories*/
    
-    ArrayList<Integer> bydatelistofcomplaints = new ArrayList<>();
-    ArrayList<Integer> listbymonthcomplaints = new ArrayList<>();
-    ArrayList<Integer> byprioritylistofcomplaints = new ArrayList<>();
-    ArrayList<Integer> onememberscomplaints = new ArrayList<>();
-    ArrayList<Integer> bymemberlistofcomplaints = new ArrayList<>();
-    ArrayList<Integer> personnelcomplaints = new ArrayList<>();
-    ArrayList<Integer> securitypersonnelcomplaints = new ArrayList<>();
-    ArrayList<Integer> maintainpersonnelcomplaints = new ArrayList<>();
-    ArrayList<Integer> securityinfracomplaints = new ArrayList<>();
-    ArrayList<Integer> maintaininfracomplaints = new ArrayList<>();
-    ArrayList<Integer> infrastructurecomplaints = new ArrayList<>();
-    ArrayList<Integer> listforoneinfrastructurecomplaints = new ArrayList<>();
+    public ArrayList<Integer> bydatelistofcomplaints = new ArrayList<>();
+    public ArrayList<Integer> listbymonthcomplaints = new ArrayList<>();
+    public ArrayList<Integer> byprioritylistofcomplaints = new ArrayList<>();
+    public ArrayList<Integer> onememberscomplaints = new ArrayList<>();
+    public ArrayList<Integer> bymemberlistofcomplaints = new ArrayList<>();
+    public ArrayList<Integer> personnelcomplaints = new ArrayList<>();
+    public ArrayList<Integer> securitypersonnelcomplaints = new ArrayList<>();
+    public ArrayList<Integer> maintainpersonnelcomplaints = new ArrayList<>();
+    public ArrayList<Integer> securityinfracomplaints = new ArrayList<>();
+    public ArrayList<Integer> maintaininfracomplaints = new ArrayList<>();
+    public ArrayList<Integer> infrastructurecomplaints = new ArrayList<>();
+    public ArrayList<Integer> listforoneinfrastructurecomplaints = new ArrayList<>();
     
     String dbconnection = "jdbc:mysql://localhost:3306/dbapp?user=root&password=12345678&useTimezone=true&serverTimezone=UTC&useSSL=false";
+    
+    public static void main(String[] args){
+        ComplaintManager m = new ComplaintManager();
+        m.list_for_one_member(1005);
+        System.out.println(m.onememberscomplaints.get(0));
+    }
     
     public boolean isEditable() {
         try {
@@ -62,7 +69,7 @@ public class ComplaintManager {
     
     
     
-    public ArrayList<Integer> list_by_member() {
+    public void list_by_member() {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconnection);
@@ -81,16 +88,14 @@ public class ComplaintManager {
            rst.close();
            conn.close();
            
-           return bymemberlistofcomplaints;
            
            
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return null;
         }
     }
     
-    public ArrayList<Integer> list_for_one_member(int memberid) {
+    public void list_for_one_member(int memberid) {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconnection);
@@ -98,7 +103,7 @@ public class ComplaintManager {
            
            onememberscomplaints.clear();
            
-           PreparedStatement pstmt = conn.prepareStatement("SELECT complaintid FROM complaints WHERE complainant=? ORDER BY complaintid");
+           PreparedStatement pstmt = conn.prepareStatement("SELECT complaintid FROM complaint WHERE complainant=? AND statusofcomplaint='F' ORDER BY complaintid");
            pstmt.setInt(1, memberid);
            ResultSet rst = pstmt.executeQuery();
            
@@ -109,11 +114,9 @@ public class ComplaintManager {
            pstmt.close();
            rst.close();
            conn.close();
-           return onememberscomplaints;
         
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return null;
         }
     }
     
@@ -597,3 +600,4 @@ public class ComplaintManager {
     }
     
 }
+

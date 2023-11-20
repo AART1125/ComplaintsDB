@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,7 +6,7 @@
  */
 
 /**
- *
+ * @author Aaron Ace Toledo
  * @author Amor De Guzman
  */
 import java.util.ArrayList;
@@ -39,6 +40,14 @@ public class Complaint {
     public int maintainincharge;
     
     public String dbconn = "jdbc:mysql://localhost:3306/dbapp?user=root&password=12345678&useTimezone=true&serverTimezone=UTC&useSSL=false";
+    
+    public static void main(String[] args){
+        Complaint C = new Complaint();
+        Complaint complaint4 = new Complaint(1004, "2011-11-03", "I", "S", 4004, "WAAFAAAFAAAFAAFAA");
+        System.out.println(complaint4.create_complaint());
+    }
+    
+    public Complaint() {}
     
     public Complaint(int complainant, String dateofcomplaintfiling, String typeofcomplaint, String personnelrequired, int complaintsubject, String description) {
         this.complaintid = 0;
@@ -77,7 +86,7 @@ public class Complaint {
         this.maintainincharge = 0;
     }
     
-    public int create_complaint() {
+    public boolean create_complaint() {
         try {
             Connection conn;
             conn = DriverManager.getConnection(dbconn);
@@ -132,10 +141,10 @@ public class Complaint {
             }
             pstmt.close();
             conn.close();
-            return 1;
-        } catch (Exception e) {
+            return true;
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return 0;
+            return false;
         }
         
     }
@@ -167,7 +176,7 @@ public class Complaint {
     */
     
      // if complaint is deemed invalid by admin
-    public int delete_complaint() {
+    public boolean delete_complaint() {
         try {
             Connection conn;
             conn = DriverManager.getConnection(dbconn);
@@ -175,12 +184,12 @@ public class Complaint {
             
             if (typeofcomplaint.name().compareTo("P") == 0) { // if complaint is personnel
                 if (typeofpersonnelcomplaint.name().compareTo("S") == 0) { // and if personnel complaint is security
-                    pstmt = conn.prepareStatement("DELETE FROM securitypersonnelcomplaint WHERE complaintid=?"); // delete from corresponding table
+                    pstmt = conn.prepareStatement("DELETE FROM securitypersoncomplaint WHERE complaintid=?"); // delete from corresponding table
                     pstmt.setInt(1, complaintid);
                     pstmt.executeUpdate();
                     
                 } else if (typeofpersonnelcomplaint.name().compareTo("M") == 0) {
-                    pstmt = conn.prepareStatement("DELETE FROM maintainpersonnelcomplaint WHERE complaintid=?"); // delete from corresponding table
+                    pstmt = conn.prepareStatement("DELETE FROM maintainpersoncomplaint WHERE complaintid=?"); // delete from corresponding table
                     pstmt.setInt(1, complaintid);
                     pstmt.executeUpdate();
                 }
@@ -209,21 +218,21 @@ public class Complaint {
             
             pstmt.close();
             conn.close();
-            return 1;
-        } catch (Exception e) {
+            return true;
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return 0;
+            return false;
         }
     }
     
-    public int update_complaint_desc(String description) {
+    public boolean update_complaint_desc(String description) {
         try {
             Connection conn;
             conn = DriverManager.getConnection(dbconn);
             
             if (statusofcomplaint.name().compareTo("F") == 1) { // if not filed, DO NOT ALLOW to change
                 conn.close();
-                return 0;
+                return false;
             }
             
             PreparedStatement pstmt = conn.prepareStatement("UPDATE complaint SET description=? WHERE complaintid=?");
@@ -234,14 +243,14 @@ public class Complaint {
             // close
             pstmt.close();
             conn.close();
-            return 1;
+            return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return 0;
+            return false;
         }
     }
     
-    public int change_security_infra_complaint_type() {
+    public boolean change_security_infra_complaint_type() {
         try {
             Connection conn;
             conn = DriverManager.getConnection(dbconn);
@@ -262,18 +271,18 @@ public class Complaint {
             
                 pstmt.close();
                 conn.close();
-                return 1;
+                return true;
             } else {
                 conn.close();
-                return 0;
+                return false;
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return 0;
+            return false;
         }
     }
     
-    public int change_maintain_infra_complaint_type() {
+    public boolean change_maintain_infra_complaint_type() {
         try {
             Connection conn;
             conn = DriverManager.getConnection(dbconn);
@@ -294,19 +303,19 @@ public class Complaint {
             
                 pstmt.close();
                 conn.close();
-                return 1;
+                return true;
             } else {
                 conn.close();
-                return 0;
+                return false;
             }
             
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return 0;
+            return false;
         }
     }
     
-    public int update_complaint_status(String newstatus) {
+    public boolean update_complaint_status(String newstatus) {
         try {
             Connection conn;
             conn = DriverManager.getConnection(dbconn);
@@ -318,14 +327,14 @@ public class Complaint {
             pstmt.executeUpdate();
             pstmt.close();
             conn.close();
-            return 1;
+            return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return 0;
+            return false;
         }
     }
     
-    public int assign_security_personnel(int personnelassigned) {
+    public boolean assign_security_personnel(int personnelassigned) {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconn);
@@ -338,17 +347,17 @@ public class Complaint {
            
            pstmt.executeUpdate();
            
-           if (update_complaint_status("R") == 1) {
-               return 1;
+           if (update_complaint_status("R")) {
+               return true;
            }
-           return 0;
+           return false;
         } catch (Exception e) {
            System.out.println(e.getMessage());
-           return 0;
+           return false;
         }
     }
     
-    public int assign_maintain_personnel(int personnelassigned) {
+    public boolean assign_maintain_personnel(int personnelassigned) {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconn);
@@ -361,18 +370,18 @@ public class Complaint {
            
            pstmt.executeUpdate();
            
-           if (update_complaint_status("R") == 1) {
-               return 1;
+           if (update_complaint_status("R")) {
+               return true;
            }
-           return 0;
+           return false;
         } catch (Exception e) {
            System.out.println(e.getMessage());
-           return 0;
+           return false;
         }
     }
     
     
-    public int get_complaint() {
+    public boolean get_complaint() {
         try {
             Connection conn;
             conn = DriverManager.getConnection(dbconn);
@@ -434,10 +443,10 @@ public class Complaint {
             
             pstmt.close();
             conn.close();
-            return 1; 
+            return true; 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return 0;
+            return false;
         }
     }
     
