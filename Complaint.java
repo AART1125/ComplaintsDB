@@ -311,7 +311,6 @@ public class Complaint {
             Connection conn;
             conn = DriverManager.getConnection(dbconn);
             
-            if 
             PreparedStatement pstmt = conn.prepareStatement("UPDATE complaint SET statusofcomplaint=? WHERE complaintid=?");
             pstmt.setString(1, newstatus);
             pstmt.setInt(2, complaintid);
