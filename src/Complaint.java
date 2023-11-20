@@ -17,7 +17,7 @@ public class Complaint {
     // fields of complaint
     public int complaintid;
     public int complainant;
-    public String dateofcomplaintfiling;
+    public Date dateofcomplaintfiling;
     public Type typeofcomplaint;
     public Status statusofcomplaint; 
     public String description;
