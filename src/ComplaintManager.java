@@ -59,7 +59,7 @@ public class ComplaintManager {
     
     
     
-    public ArrayList list_by_member() {
+    public ArrayList<Integer> list_by_member() {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconnection);
@@ -87,7 +87,7 @@ public class ComplaintManager {
         }
     }
     
-    public ArrayList list_by_priority() {
+    public ArrayList<Integer> list_by_priority() {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconnection);
@@ -114,7 +114,7 @@ public class ComplaintManager {
         }
     }
     
-    public ArrayList list_personnel_complaints() {
+    public ArrayList<Integer> list_personnel_complaints() {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconnection);
@@ -141,7 +141,7 @@ public class ComplaintManager {
         }
     }
     
-    public ArrayList list_personnel_security_complaints() {
+    public ArrayList<Integer> list_personnel_security_complaints() {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconnection);
@@ -168,7 +168,7 @@ public class ComplaintManager {
         }
     }
     
-    public ArrayList list_personnel_maintain_complaints() {
+    public ArrayList<Integer> list_personnel_maintain_complaints() {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconnection);
@@ -196,7 +196,7 @@ public class ComplaintManager {
     }
     
     
-    public ArrayList list_infrastructure_complaints() {
+    public ArrayList<Integer> list_infrastructure_complaints() {
         try {
             Connection conn;
             conn = DriverManager.getConnection(dbconnection);
@@ -224,7 +224,7 @@ public class ComplaintManager {
     }
     
     
-    public ArrayList list_security_infrastructure_complaints() {
+    public ArrayList<Integer> list_security_infrastructure_complaints() {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconnection);
@@ -251,7 +251,7 @@ public class ComplaintManager {
         }
     }
     
-    public ArrayList list_maintain_infrastructure_complaints() {
+    public ArrayList<Integer> list_maintain_infrastructure_complaints() {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconnection);
