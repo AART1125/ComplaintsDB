@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <link rel="stylesheet" href="stylesheet.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Register Personnel</title>
+    </head>
+    <body>
+        <h1 class="header1">Register a Personnel to the Community!</h1>
+        <div class="registermembersform">
+            <form action="registerpersonnel_processing.jsp">
+                <p class="row">
+                    <label class="text1" for="firstname">First Name: </label>
+                    <input class='inputregister' id="firstname" name="firstname" required>
+                </p>
+                <p class="row">
+                    <label class="text1" for="middlename">Middle Name: </label>
+                    <input class='inputregister' id="middlename" name="middlename" required>
+                </p>
+                <p class="row">
+                    <label class="text1" for="lastname">Last Name:</label>
+                    <input class='inputregister' id="lastname" name="lastname" required>
+                </p>
+                <p class="row">
+                    <label class="text1" for="password">Password</label>
+                    <input class='inputregister' type="password" id="password" name="password" required>
+                </p>
+                <p class="row">
+                    <label class="text1" for="dateofbirth">Date of Birth</label>
+                    <input class='inputregister' id="dateofbirth" type="date" name="dateofbirth" required>
+                </p>
+                <p class="row">
+                    <label class="text1">Gender: </label><br>
+                </p>
+                <p class="row">
+                    <input id="male" type="radio" name="gender" value="M" required><label class="text2" for="male">Male</label>
+                </p>
+                <p class="row">
+                    <input id="female" type="radio" name="gender" value="F"><label class="text2" for="female">Female</label>
+                </p>
+                <p class="row">
+                    <label class="text1" for="email">Email Address: </label>
+                    <input class="inputregister" id="email" type="email" name="email" required>
+                </p>
+                <p class="row">
+                    <label class="text1" for="contact">Contact Number: </label>
+                    <input class="inputregister" id="contact" name="contact" required>
+                </p>
+                <p class="row">
+                    <label class="text1" for="hire">Hire Date</label>
+                    <input class='inputregister' id="hire" type="date" name="hire" required>
+                </p>
+                <p class="row">
+                    <label class="text1" for="email">Position: </label>
+                    <select id="position" name="positions" required>
+                        <option value="S">Security</option>
+                        <option value="M">Maintenance</option>
+                        <option value="A">Admin</option>
+                    </select>
+                </p>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </body>
+</html>

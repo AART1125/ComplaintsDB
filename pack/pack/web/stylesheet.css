@@ -1,0 +1,95 @@
+body {
+    background-color: wheat;
+    text-align: center;
+}
+
+table, th, td {
+    font-family: 'Courier New', Courier, monospace;
+    color: black;
+    border: 2px solid white;
+    border-collapse: collapse;
+    padding: 12px;
+    margin: auto;
+}
+
+#input {
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+}
+
+.button1{
+    height: 40px;
+    width: 270px;
+    text-align: center;
+    font-family:'Courier New', Courier, monospace;
+    background-color: aliceblue;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: black;
+    margin: 10px;
+}
+
+.button1:hover{
+    opacity: .8;
+}
+
+.header1 {
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.header2 {
+    color: red;
+    font-size: 15;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.text1 {
+    display: table-cell;
+    font-size: 20px;
+    font-family:'Courier New', Courier, monospace;
+    color: blueviolet;
+}
+
+.text2 {
+    font-size: 20px;
+    font-family:'Courier New', Courier, monospace;
+    color: blueviolet;
+}
+
+a:link {
+    color: coral;
+}
+
+textarea {
+    resize: none;
+}
+
+.complaintsform {
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px dotted red;
+    height: 1000px;
+    width: 500px;
+    margin: auto;
+}
+
+.registermembersform {
+    margin: auto;
+    display: table;
+    text-align: left;
+}
+
+.row{
+    display: table-row;
+}
+
+.inputregister {
+    display: table-cell;
+}
+
+.hidden{
+    display: none;
+}
