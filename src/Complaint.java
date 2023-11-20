@@ -227,8 +227,9 @@ public class Complaint {
                 return 0;
             }
             
-            PreparedStatement pstmt = conn.prepareStatement("UPDATE complaint SET description=?");
+            PreparedStatement pstmt = conn.prepareStatement("UPDATE complaint SET description=? WHERE complaintid=?");
             pstmt.setString(1, description);
+            pstmt.setInt(2, complaintid);
             pstmt.executeUpdate();
             
             // close
@@ -246,8 +247,9 @@ public class Complaint {
             Connection conn;
             conn = DriverManager.getConnection(dbconn);
             
-            PreparedStatement pstmt = conn.prepareStatement("UPDATE complaint SET statusofcomplaint=?");
+            PreparedStatement pstmt = conn.prepareStatement("UPDATE complaint SET statusofcomplaint=? WHERE complaintid=?");
             pstmt.setString(1, newstatus);
+            pstmt.setInt(2, complaintid);
              
             pstmt.executeUpdate();
             pstmt.close();
@@ -258,6 +260,53 @@ public class Complaint {
             return 0;
         }
     }
+    
+    public int assign_security_personnel(int personnelassigned) {
+        try {
+           Connection conn;
+           conn = DriverManager.getConnection(dbconn);
+           
+           this.personnelrespondent = personnelassigned;
+           this.securityincharge = personnelassigned;
+           PreparedStatement pstmt = conn.prepareStatement("UPDATE reviewedsecuritypersoncomplaint SET securityincharge=? WHERE complaintid=?");
+           pstmt.setInt(1, personnelrespondent);
+           pstmt.setInt(2, complaintid);
+           
+           pstmt.executeUpdate();
+           
+           if (update_complaint_status("R") == 1) {
+               return 1;
+           }
+           return 0;
+        } catch (Exception e) {
+           System.out.println(e.getMessage());
+           return 0;
+        }
+    }
+    
+    public int assign_maintain_personnel(int personnelassigned) {
+        try {
+           Connection conn;
+           conn = DriverManager.getConnection(dbconn);
+           
+           this.personnelrespondent = personnelassigned;
+           this.maintainincharge = personnelassigned;
+           PreparedStatement pstmt = conn.prepareStatement("UPDATE reviewedmaintainpersoncomplaint SET maintainincharge=? WHERE complaintid=?");
+           pstmt.setInt(1, personnelrespondent);
+           pstmt.setInt(2, complaintid);
+           
+           pstmt.executeUpdate();
+           
+           if (update_complaint_status("R") == 1) {
+               return 1;
+           }
+           return 0;
+        } catch (Exception e) {
+           System.out.println(e.getMessage());
+           return 0;
+        }
+    }
+    
     
     public int get_complaint() {
         try {
