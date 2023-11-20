@@ -21,6 +21,7 @@ public class ComplaintManager {
     /*ArrayLists for lists of all categories*/
    
     ArrayList<Integer> chronologicallistofcomplaints = new ArrayList();
+    ArrayList<Integer> bymemberlistofcomplaints = new ArrayList();
     ArrayList<Integer> personnelcomplaints = new ArrayList();
     ArrayList<Integer> securitypersonnelcomplaints = new ArrayList();
     ArrayList<Integer> maintainpersonnelcomplaints = new ArrayList();
@@ -28,12 +29,63 @@ public class ComplaintManager {
     ArrayList<Integer> maintaininfracomplaints = new ArrayList();
     ArrayList<Integer> infrastructurecomplaints = new ArrayList();
     
-    String dbconnection = "\"jdbc:mysql://localhost:3306/dbapp?user=root&password=12345678&useTimezone=true&serverTimezone=UTC&useSSL=false\";";
+    String dbconnection = "jdbc:mysql://localhost:3306/dbapp?user=root&password=12345678&useTimezone=true&serverTimezone=UTC&useSSL=false";
     
     public boolean isEditable() {
-        complaints.
+        try {
+           Connection conn;
+           conn = DriverManager.getConnection(dbconnection);
+           System.out.println("Connection Successful");
+          
+           PreparedStatement pstmt = conn.prepareStatement("SELECT complaintid FROM complaints WHERE complaintid=?");
+           pstmt.setInt(1, complaints.complaintid);
+           ResultSet rst = pstmt.executeQuery();
+           String status = "";
+           
+           while (rst.next()) {
+               status = rst.getString("statusofcomplaint");
+           }
+                   
+           if (status.compareTo(Status.F.name()) == 0) {
+               return true;
+           }   else {
+               return false;
+           }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
     
+    
+    
+    public ArrayList list_by_member() {
+        try {
+           Connection conn;
+           conn = DriverManager.getConnection(dbconnection);
+           System.out.println("Connection Successful");
+           
+           bymemberlistofcomplaints.clear();
+           
+           PreparedStatement pstmt = conn.prepareStatement("SELECT complaintid FROM complaints ORDER BY complainant");
+           ResultSet rst = pstmt.executeQuery();
+           
+           while (rst.next()) {
+               bymemberlistofcomplaints.add(rst.getInt("complaintid"));
+           }
+           
+           pstmt.close();
+           rst.close();
+           conn.close();
+           
+           return bymemberlistofcomplaints;
+           
+           
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
     
     public ArrayList list_by_priority() {
         try {
