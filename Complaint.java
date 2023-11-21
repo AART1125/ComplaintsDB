@@ -49,6 +49,30 @@ public class Complaint {
     
     public Complaint() {}
     
+    /* constructor for creating criteria list */
+    public Complaint(int complaintid, int complainant, String dateofcomplaintfiling, String typeofcomplaint, String statusofcomplaint, String description) {
+        this.complaintid = complaintid;
+        this.complainant = complainant;
+        this.dateofcomplaintfiling = Date.valueOf(dateofcomplaintfiling);
+        this.typeofcomplaint = Type.valueOf(typeofcomplaint);
+        if (typeofcomplaint.compareTo("I") == 0) {
+            this.maintainrespondent = 0;
+            this.securityrespondent = 0;
+        } else if (typeofcomplaint.compareTo("P") == 0) {
+            this.securityincharge = 0;
+            this.maintainincharge = 0;
+            if (typeofpersonnelcomplaint.name().compareTo("S") == 0) {
+                this.securityrespondent = personnelrespondent;
+                this.maintainrespondent = 0;
+            } else if (typeofpersonnelcomplaint.name().compareTo("M") == 0) {
+                this.maintainrespondent = personnelrespondent;
+                this.securityrespondent = 0;
+            }
+            this.problematicinfrastructure = 0;
+        }
+    }
+    
+    /* constructor for literal complaint creation */
     public Complaint(int complainant, String dateofcomplaintfiling, String typeofcomplaint, String personnelrequired, int complaintsubject, String description) {
         this.complaintid = 0;
         this.complainant = complainant;

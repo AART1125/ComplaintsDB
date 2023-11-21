@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DB_Complaints_src;
+//package DB_Complaints_src;
 
 /**
  *
@@ -32,6 +32,10 @@ public class ComplaintManager {
     public ArrayList<Integer> maintaininfracomplaints = new ArrayList<>();
     public ArrayList<Integer> infrastructurecomplaints = new ArrayList<>();
     public ArrayList<Integer> listforoneinfrastructurecomplaints = new ArrayList<>();
+    public ArrayList<Integer> criterialist = new ArrayList<>();
+    public ArrayList<Complaint> complaintsfromcriterialist = new ArrayList<>();
+    
+    public String query;
     
     String dbconnection = "jdbc:mysql://localhost:3306/dbapp?user=root&password=12345678&useTimezone=true&serverTimezone=UTC&useSSL=false";
     
@@ -429,6 +433,96 @@ public class ComplaintManager {
             return null;
         }
     }
+    
+    public void list_by_criteria(String status, String type, String dateforyear, String dateformonth, String complainant) {
+        query = "";
+        if(status.compareTo("") == 0 && type.compareTo("") == 0 && dateforyear.compareTo("") == 0 && dateformonth.compareTo("") == 0 && complainant.compareTo("") == 0 ){
+            query = "SELECT * FROM complaints";
+        } else {
+            query = "SELECT * FROM complaints WHERE";
+            Date datemonth;
+            Date dateyear;
+            int month, year;
+            
+            if (dateforyear.compareTo("") == 1) {
+                dateyear = Date.valueOf(dateforyear);
+                year = dateyear.toLocalDate().getYear();
+            } else {
+                year = 0;
+            }
+            
+            if (dateformonth.compareTo("") == 1) {
+                datemonth = Date.valueOf(dateformonth);
+                month = datemonth.toLocalDate().getMonthValue();
+            } else {
+                month = 0;
+            }
+            
+            if(month != 0 && year != 0){ // if month and year were not required
+                query += " MONTH(dateofresolution)="+month+" AND YEAR(dateofresolution)="+year;
+            } else if (month == 0 && year != 0) { // if year was required
+                query += " YEAR(dateofresolution)="+year;
+            }  else if (month != 0 && year == 0) {
+                query += " MONTH(dateofcomplaint)="+month+"AND YEAR(dateofresolution)="+year; // if month (and consequentially, year) was required
+            }
+            
+            if (status.compareTo("") == 1 && type.compareTo("") == 0 && complainant.compareTo("") == 0) { // only status
+                query += "AND statusofcomplaint="+ status;
+            }
+            
+            if (status.compareTo("") == 0 && type.compareTo("") == 1 && complainant.compareTo("") == 0) { // only type
+                query += "AND typeofcomplaint=" + type;
+            }
+            
+            if (status.compareTo("") == 0 && type.compareTo("") == 0 && complainant.compareTo("") == 1) { // only complainant
+                query += "AND complainant=" +complainant;
+            }
+            
+            if (status.compareTo("") == 1 && type.compareTo("") == 1 && complainant.compareTo("") == 1) { // if three filters
+                query += "AND statusofcomplaint"+status+"AND typeofcomplaint="+type+"AND complainant="+complainant;
+            }
+            
+            if (status.compareTo("") == 1 && type.compareTo("") == 1 && complainant.compareTo("") == 0) { // if two filters (status and type)
+                query += "AND statusofcomplaint"+status+"AND typeofcomplaint="+type;
+            }
+            
+            if (status.compareTo("") == 0 && type.compareTo("") == 1 && complainant.compareTo("") == 1) { // if two filters (type and complainant)
+                query += "AND typeofcomplaint="+type+"AND complainant="+complainant;
+            }
+            
+            if (status.compareTo("") == 1 && type.compareTo("") == 0 && complainant.compareTo("") == 1) { // if two filters (status and complainant)
+                query += "AND statusofcomplaint="+type+"AND complainant="+complainant;
+            }
+        }
+    }
+        
+    public void generate_report() {
+        int complaintid, complainant;
+        String dateofcomplaintfiling;
+        String typeofcomplaint;
+        String statusofcomplaint; 
+        String description;
+        
+        try {
+            Connection conn = DriverManager.getConnection(dbconnection);
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rst = pstmt.executeQuery();
+            
+            while(rst.next()) {
+                complaintid = rst.getInt("complaintid");
+                complainant = rst.getInt("complainant");
+                dateofcomplaintfiling = rst.getString("dateofcomplaint");
+                typeofcomplaint = rst.getString("typeofcomplaint");
+                statusofcomplaint = rst.getString("statusofcomplaint");
+                description = rst.getString("description");
+                
+                complaintsfromcriterialist.add(new Complaint(complaintid, complainant, dateofcomplaintfiling, typeofcomplaint, statusofcomplaint, description));
+            }
+        } catch(SQLException e) {}
+                System.err.println(e.getMessage());
+    }
+         
+        
     
     public int get_total_complaints() {
         try {
