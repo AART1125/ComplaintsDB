@@ -144,24 +144,37 @@ public class ResolutionManager {
     public void list_by_criteria(String dateformonth, String dateforyear, int personnel) {
         String query = "";
         if(dateformonth.compareTo("") == 0 && dateforyear.compareTo("") == 0 && personnel == 0){
-            query = "SELECT resolutionid FROM resolutions";
+            query = "SELECT * FROM resolutions";
         } else {
-            Date datemonth = Date.valueOf(dateformonth);
-            int month = datemonth.toLocalDate().getMonthValue();
+            query = "SELECT * FROM resolutions WHERE";
             
-            Date dateyear = Date.valueOf(dateforyear);
-            int year = dateyear.toLocalDate().getYear();
+            int month = 0, year = 0;
+            Date datemonth, dateyear;
+            
+            if (dateformonth.compareTo("") != 0) {
+                datemonth = Date.valueOf(dateformonth);
+                month = datemonth.toLocalDate().getMonthValue();
+            }
+            
+            if (dateforyear.compareTo("") != 0) {
+                dateyear = Date.valueOf(dateforyear);
+                year = dateyear.toLocalDate().getYear();
+            }
             
             if(month != 0 && year != 0){
-                query += " WHERE MONTH(dateofresolution)="+month+" AND YEAR(dateofresolution)="+year;
+                query += " MONTH(dateofresolution)="+month+" AND YEAR(dateofresolution)="+year;
             } else if (month != 0 && year == 0) {
-                query += " WHERE MONTH(dateofresolution)="+month;
+                query += " MONTH(dateofresolution)="+month;
             }  else if (month != 0 && year == 0) {
-                query += " WHERE YEAR(dateofresolution)="+year;
+                query += " YEAR(dateofresolution)="+year;
             }
             
             if (personnel != 0) {
-                query += "AND personnelincharge="+personnel;
+                if (month != 0 && year != 0) {
+                    query += " AND personnelincharge="+personnel;
+                } else {
+                    query += " WHERE personnelincharge="+personnel;
+                }
             }
         }
     }
