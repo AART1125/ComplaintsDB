@@ -52,7 +52,7 @@ public class ComplaintManager {
            conn = DriverManager.getConnection(dbconnection);
            System.out.println("Connection Successful");
           
-           PreparedStatement pstmt = conn.prepareStatement("SELECT complaintid FROM complaints WHERE complaintid=?");
+           PreparedStatement pstmt = conn.prepareStatement("SELECT complaintid FROM complaint WHERE complaintid=?");
            pstmt.setInt(1, complaints.complaintid);
            ResultSet rst = pstmt.executeQuery();
            String status = "";
@@ -82,7 +82,7 @@ public class ComplaintManager {
            
            bymemberlistofcomplaints.clear();
            
-           PreparedStatement pstmt = conn.prepareStatement("SELECT complaintid FROM complaints ORDER BY complainant");
+           PreparedStatement pstmt = conn.prepareStatement("SELECT complaintid FROM complaint ORDER BY complainant");
            ResultSet rst = pstmt.executeQuery();
            
            while (rst.next()) {
@@ -133,7 +133,7 @@ public class ComplaintManager {
            
            byprioritylistofcomplaints.clear();
            
-           PreparedStatement pstmt = conn.prepareStatement("SELECT complaintid FROM complaints ORDER BY complaintid");
+           PreparedStatement pstmt = conn.prepareStatement("SELECT complaintid FROM complaint ORDER BY complaintid");
            ResultSet rst = pstmt.executeQuery();
            
            while (rst.next()) {
@@ -160,7 +160,7 @@ public class ComplaintManager {
            
            bydatelistofcomplaints.clear();
            
-           PreparedStatement pstmt = conn.prepareStatement("SELECT complaintid FROM complaints ORDER BY dateofoffense");
+           PreparedStatement pstmt = conn.prepareStatement("SELECT complaintid FROM complaint ORDER BY dateofoffense");
            ResultSet rst = pstmt.executeQuery();
            
            while (rst.next()) {

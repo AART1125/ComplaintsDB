@@ -365,15 +365,17 @@ public class Complaint {
            
            this.personnelrespondent = personnelassigned;
            this.securityincharge = personnelassigned;
-           PreparedStatement pstmt = conn.prepareStatement("UPDATE reviewedsecuritypersoncomplaint SET securityincharge=? WHERE complaintid=?");
-           pstmt.setInt(1, personnelrespondent);
-           pstmt.setInt(2, complaintid);
+           PreparedStatement pstmt = conn.prepareStatement("INSERT INTO reviewedsecurityinfracomplaint (complaintid, securityincharge) VALUE (?,?)");
+           pstmt.setInt(1, complaintid);
+           pstmt.setInt(2, securityincharge);
            
            pstmt.executeUpdate();
            
            if (update_complaint_status("R")) {
                return true;
            }
+           pstmt.close();
+           conn.close();
            return false;
         } catch (Exception e) {
            System.out.println(e.getMessage());
@@ -388,15 +390,69 @@ public class Complaint {
            
            this.personnelrespondent = personnelassigned;
            this.maintainincharge = personnelassigned;
-           PreparedStatement pstmt = conn.prepareStatement("UPDATE reviewedmaintainpersoncomplaint SET maintainincharge=? WHERE complaintid=?");
-           pstmt.setInt(1, personnelrespondent);
-           pstmt.setInt(2, complaintid);
+           PreparedStatement pstmt = conn.prepareStatement("INSERT INTO reviewedmaintaininfracomplaint (complaintid, maintainincharge) VALUE (?,?)");
+           pstmt.setInt(1, complaintid);
+           pstmt.setInt(2, maintainincharge);
            
            pstmt.executeUpdate();
            
            if (update_complaint_status("R")) {
                return true;
            }
+           pstmt.close();
+           conn.close();
+           return false;
+        } catch (Exception e) {
+           System.out.println(e.getMessage());
+           return false;
+        }
+    }
+    
+    public boolean assign_admin_maintainpersoncomplaint(int personnelassigned) {
+        try {
+           Connection conn;
+           conn = DriverManager.getConnection(dbconn);
+           
+           this.personnelrespondent = personnelassigned;
+           this.adminincharge = personnelassigned;
+         
+           PreparedStatement pstmt = conn.prepareStatement("INSERT INTO reviewedmaintainpersoncomplaint (complaintid, adminincharge) VALUE (?,?)");
+           pstmt.setInt(1, complaintid);
+           pstmt.setInt(2, adminincharge);
+           
+           pstmt.executeUpdate();
+           
+           if (update_complaint_status("R")) {
+               return true;
+           }
+           pstmt.close();
+           conn.close();
+           return false;
+        } catch (Exception e) {
+           System.out.println(e.getMessage());
+           return false;
+        }
+    }
+    
+    public boolean assign_admin_securitypersoncomplaint(int personnelassigned) {
+        try {
+           Connection conn;
+           conn = DriverManager.getConnection(dbconn);
+           
+           this.personnelrespondent = personnelassigned;
+           this.adminincharge = personnelassigned;
+         
+           PreparedStatement pstmt = conn.prepareStatement("INSERT INTO reviewedsecuritypersoncomplaint (complaintid, adminincharge) VALUE (?,?)");
+           pstmt.setInt(1, complaintid);
+           pstmt.setInt(2, adminincharge);
+           
+           pstmt.executeUpdate();
+           
+           if (update_complaint_status("R")) {
+               return true;
+           }
+           pstmt.close();
+           conn.close();
            return false;
         } catch (Exception e) {
            System.out.println(e.getMessage());
@@ -423,6 +479,7 @@ public class Complaint {
             }
             
             if (typeofcomplaint.name().compareTo("P") == 0) {
+                problematicinfrastructure = 0;
                 pstmt = conn.prepareStatement("SELECT personnelrespondent, typeofpersoncomplaint FROM personnelcomplaint WHERE complaintid=?");
                 pstmt.setInt(1, complaintid);
                 rst = pstmt.executeQuery();
@@ -433,35 +490,93 @@ public class Complaint {
                 } 
                 
                 if (typeofpersonnelcomplaint.name().compareTo("S") == 0) {
+                    maintainrespondent = 0;
                     pstmt = conn.prepareStatement("SELECT securityrespondent FROM securitypersoncomplaint WHERE complaintid=?");
                     pstmt.setInt(1, complaintid);
+                    rst = pstmt.executeQuery();
                     
+                    while (rst.next()) {
+                        securityrespondent = rst.getInt("securityrespondent");
+                    }
+                    
+                    if (statusofcomplaint.toString().compareTo("R") == 0){
+                        pstmt = conn.prepareStatement("SELECT adminincharge FROM reviewedsecuritypersoncomplaint WHERE complaintid=?");
+                        pstmt.setInt(1, complaintid);
+                        rst = pstmt.executeQuery();
+                        
+                        while (rst.next()) {
+                            adminincharge = rst.getInt("adminincharge");
+                        }
+                        
+                        personnelrespondent = securityrespondent;
+                    }
+                   
+                } else if (typeofpersonnelcomplaint.name().compareTo("M") == 0) {
+                    securityrespondent = 0;
+                    pstmt = conn.prepareStatement("SELECT maintainrespondent FROM maintainpersoncomplaint WHERE complaintid=?");
+                    pstmt.setInt(1, complaintid);
                     rst = pstmt.executeQuery();
                     problematicinfrastructure = 0;
                     while (rst.next()) {
-                        securityrespondent = rst.getInt("securityrespondent");
-                        maintainrespondent = 0;
-                    }
-                } else if (typeofpersonnelcomplaint.name().compareTo("M") == 0) {
-                    pstmt = conn.prepareStatement("SELECT maintainrespondent FROM maintainpersoncomplaint WHERE complaintid=?");
-                    pstmt.setInt(1, complaintid);
-                    
-                    rst = pstmt.executeQuery();
-                    personnelrespondent = 0;
-                    securityrespondent = 0;
-                    maintainrespondent = 0;
-                    while (rst.next()) {
                         maintainrespondent = rst.getInt("maintainrespondent");
                     }
+                    
+                    if (statusofcomplaint.toString().compareTo("R") == 0){
+                        pstmt = conn.prepareStatement("SELECT adminincharge FROM reviewedmaintainpersoncomplaint WHERE complaintid=?");
+                        pstmt.setInt(1, complaintid);
+                        rst = pstmt.executeQuery();
+                        
+                        while (rst.next()) {
+                            adminincharge = rst.getInt("adminincharge");
+                        }
+                    }
+                    personnelrespondent = maintainrespondent;
                 }
             } else if (typeofcomplaint.name().compareTo("I") == 0) {
-                pstmt = conn.prepareStatement("SELECT problematicinfrastructure, FROM infrastructurecomplaint WHERE complaintid=?");
+                securityrespondent = 0;
+                maintainrespondent = 0;
+                adminincharge = 0;
+                
+                pstmt = conn.prepareStatement("SELECT problematicinfrastructure FROM infrastructurecomplaint WHERE complaintid=?");
                 pstmt.setInt(1, complaintid);
                 
                 rst = pstmt.executeQuery();
                 
                 while (rst.next()) {
                     problematicinfrastructure = rst.getInt("problematicinfrastructure");
+                }
+                
+                pstmt = conn.prepareStatement("SELECT typeofinfracomplaint FROM infrastructurecomplaint WHERE complaintid=?");
+                pstmt.setInt(1, complaintid);
+                
+                rst = pstmt.executeQuery();
+                
+                while (rst.next()) {
+                    typeofinfrastructurecomplaint = Personnel_Involved.valueOf(rst.getString("typeofinfracomplaint"));
+                }
+                
+                if (statusofcomplaint.toString().compareTo("R") == 0) {
+                    if (typeofinfrastructurecomplaint.compareTo(Personnel_Involved.S) == 0) {
+                        maintainincharge = 0;
+                        pstmt = conn.prepareStatement("SELECT securityincharge FROM reviewedsecurityinfracomplaint WHERE complaintid=?");
+                        pstmt.setInt(1, complaintid);
+                    
+                        rst = pstmt.executeQuery();
+                    
+                        while (rst.next()) {
+                            securityincharge = rst.getInt("securityincharge");
+                        }
+                    } else if (typeofinfrastructurecomplaint.compareTo(Personnel_Involved.M) == 0) {
+                        securityincharge = 0;
+                        pstmt = conn.prepareStatement("SELECT maintainincharge FROM reviewedmaintaininfracomplaint WHERE complaintid=?");
+                        pstmt.setInt(1, complaintid);
+                        
+                        rst = pstmt.executeQuery();
+                        
+                        while (rst.next()) {
+                            maintainincharge = rst.getInt("maintainincharge");
+                        }
+                    }
                 }
             }
             
