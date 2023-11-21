@@ -34,6 +34,7 @@ public class ComplaintManager {
     public ArrayList<Integer> listforoneinfrastructurecomplaints = new ArrayList<>();
     public ArrayList<Integer> criterialist = new ArrayList<>();
     public ArrayList<Complaint> complaintsfromcriterialist = new ArrayList<>();
+    public ArrayList<Integer> filedcomplaints = new ArrayList<>();
     
     public String query;
     
@@ -324,7 +325,7 @@ public class ComplaintManager {
         }
     }
     
-    public ArrayList<Integer> list_personnel_maintain_complaints() {
+    public void list_personnel_maintain_complaints() {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconnection);
@@ -343,16 +344,14 @@ public class ComplaintManager {
            pstmt.close();
            rst.close();
            conn.close();
-           return maintainpersonnelcomplaints;
            
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return null;
         }
     }
     
     
-    public ArrayList<Integer> list_infrastructure_complaints() {
+    public void list_infrastructure_complaints() {
         try {
             Connection conn;
             conn = DriverManager.getConnection(dbconnection);
@@ -371,16 +370,16 @@ public class ComplaintManager {
             pstmt.close();
             rst.close();
             conn.close();
-            return infrastructurecomplaints;
+            
            
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return null;
+          
         }
     }
     
     
-    public ArrayList list_security_infrastructure_complaints() {
+    public void list_security_infrastructure_complaints() {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconnection);
@@ -399,15 +398,13 @@ public class ComplaintManager {
            pstmt.close();
            rst.close();
            conn.close();
-           return securityinfracomplaints;
            
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return null;
         }
     }
     
-    public ArrayList<Integer> list_maintain_infrastructure_complaints() {
+    public void list_maintain_infrastructure_complaints() {
         try {
            Connection conn;
            conn = DriverManager.getConnection(dbconnection);
@@ -426,20 +423,53 @@ public class ComplaintManager {
            pstmt.close();
            rst.close();
            conn.close();
-           return maintaininfracomplaints;
            
-        } catch (Exception e) {
+           
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return null;
+            
         }
     }
     
+    public void list_filed_commplaints() {
+        try {
+           Connection conn;
+           conn = DriverManager.getConnection(dbconnection);
+           System.out.println("Connection Successful");
+           
+           filedcomplaints.clear();
+           
+           PreparedStatement pstmt = conn.prepareStatement("SELECT complaintid FROM complaint WHERE statusofcomplaint='F' ORDER BY complaintid");
+           
+           ResultSet rst = pstmt.executeQuery();
+           
+           while (rst.next()) {
+               filedcomplaints.add(rst.getInt("complaintid"));            
+           }
+           
+           pstmt.close();
+           rst.close();
+           conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    /*Filtering by:
+        status - String status (F/R/S/U)
+        type   - String type (P/I)
+        year   - String dateforyear (year is extracted in the function)
+        month  - String dateformonth (month is extracted in the function)
+        member - String complainant
+    
+    */
     public void list_by_criteria(String status, String type, String dateforyear, String dateformonth, String complainant) {
         query = "";
         if(status.compareTo("") == 0 && type.compareTo("") == 0 && dateforyear.compareTo("") == 0 && dateformonth.compareTo("") == 0 && complainant.compareTo("") == 0 ){
-            query = "SELECT * FROM complaints";
+            query = "SELECT * FROM complaint";
         } else {
-            query = "SELECT * FROM complaints WHERE";
+            query = "SELECT * FROM complaint WHERE";
+                                                                                
             Date datemonth;
             Date dateyear;
             int month, year;
@@ -458,9 +488,9 @@ public class ComplaintManager {
                 month = 0;
             }
             
-            if(month != 0 && year != 0){ // if month and year were not required
+            if (month != 0 && year != 0){ // if month and year were not required
                 query += " MONTH(dateofresolution)="+month+" AND YEAR(dateofresolution)="+year;
-            } else if (month == 0 && year != 0) { // if year was required
+            }   else if (month == 0 && year != 0) { // if year was required
                 query += " YEAR(dateofresolution)="+year;
             }  else if (month != 0 && year == 0) {
                 query += " MONTH(dateofcomplaint)="+month+"AND YEAR(dateofresolution)="+year; // if month (and consequentially, year) was required
@@ -495,6 +525,7 @@ public class ComplaintManager {
             }
         }
     }
+
         
     public void generate_report() {
         int complaintid, complainant;
@@ -502,6 +533,8 @@ public class ComplaintManager {
         String typeofcomplaint;
         String statusofcomplaint; 
         String description;
+        
+        complaintsfromcriterialist.clear();
         
         try {
             Connection conn = DriverManager.getConnection(dbconnection);
@@ -518,8 +551,9 @@ public class ComplaintManager {
                 
                 complaintsfromcriterialist.add(new Complaint(complaintid, complainant, dateofcomplaintfiling, typeofcomplaint, statusofcomplaint, description));
             }
-        } catch(SQLException e) {}
-                System.err.println(e.getMessage());
+        } catch(SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
          
         

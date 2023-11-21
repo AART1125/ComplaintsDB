@@ -16,12 +16,14 @@ public class ResolutionManager {
     
     public Resolution resolution;
     
+    String query;
     ArrayList<Integer> orderedbyid = new ArrayList<>();
     ArrayList<Integer> orderedbydate = new ArrayList<>();
     ArrayList<Integer> orderedbyspecificmonth = new ArrayList<>();
     ArrayList<Integer> orderedbyspecificyear = new ArrayList<>();
     ArrayList<Integer> orderedbytype = new ArrayList<>();
     ArrayList<Integer> criterialist = new ArrayList<>();
+    ArrayList<Resolution> resolutionbylist = new ArrayList<>();
     
     String dbconnection = "jdbc:mysql://localhost:3306/dbapp?user=root&password=12345678&useTimezone=true&serverTimezone=UTC&useSSL=false";
     
@@ -138,12 +140,11 @@ public class ResolutionManager {
         }
     }
     
-    public void list_by_criteria(String dateformonth, String dateforyear, String typeP, String typeI, String typeS, String typeM) {
+    
+    public void list_by_criteria(String dateformonth, String dateforyear, int personnel) {
         String query = "";
-        boolean personSecurityNeeded = false, personMaintainNeeded = false, infraSecurityNeeded = false, infraMaintainNeeded = false, noCriteria = false;
-        if(dateformonth.compareTo("") == 0 || dateforyear.compareTo("") == 0 || typeP.compareTo("") == 0 || typeI.compareTo("") == 0 || typeS.compareTo("") == 0 || typeM.compareTo("") == 0){
+        if(dateformonth.compareTo("") == 0 && dateforyear.compareTo("") == 0 && personnel == 0){
             query = "SELECT resolutionid FROM resolutions";
-            noCriteria = true;
         } else {
             Date datemonth = Date.valueOf(dateformonth);
             int month = datemonth.toLocalDate().getMonthValue();
@@ -159,85 +160,35 @@ public class ResolutionManager {
                 query += " WHERE YEAR(dateofresolution)="+year;
             }
             
-            if (typeS.compareTo("") == 1) {         // if all security chosen
-                if (typeP.compareTo("") == 1) {     // check if needing personnel security
-                    personSecurityNeeded = true;
-                }
-                
-                if (typeI.compareTo("") == 1) {     // check if needing infrastructure security
-                    infraSecurityNeeded = true;
-                }
+            if (personnel != 0) {
+                query += "AND personnelincharge="+personnel;
             }
-            
-            if (typeM.compareTo("") == 1) {         // if all maintenance chosen
-                if (typeP.compareTo("") == 1) {     // check if needing personnel maintenance
-                    personMaintainNeeded = true;                  
-                }
-                
-                if (typeI.compareTo("") == 1) {     // check if needing infrastructure maintenance
-                    infraMaintainNeeded = true;
-                }
-            }
-        
         }
-         
-        try {
-           Connection conn;
-           conn = DriverManager.getConnection(dbconnection);
-           System.out.println("Connection Successful");
-                
-           criterialist.clear();
-            
-           PreparedStatement pstmt;
-           ResultSet rst;
-                
-           if (noCriteria) { // then simple query collecting all resolutionsids is called
-                pstmt = conn.prepareStatement(query);
-                rst = pstmt.executeQuery();
-                    
-                while (rst.next()) {
-                    criterialist.add(rst.getInt("resolutionid"));
-                }
-            }
-                
-            if (personSecurityNeeded) { // check if needed, then add to list
-                pstmt = conn.prepareStatement("SELECT resolutionid FROM resolutions r JOIN securitypersonresolution s ON s.resolutionid = r.resolutionid" + query);
-                rst = pstmt.executeQuery();
-                
-                while (rst.next()) {
-                    criterialist.add(rst.getInt("resolutionid"));
-                }
-            }
-            
-            if (infraSecurityNeeded) {  // check if needed, then add to list
-                pstmt = conn.prepareStatement("SELECT resolutionid FROM resolutions r JOIN securityinfraresolution s ON s.resolutionid = r.resolutionid" + query);
-                rst = pstmt.executeQuery();
-                
-                while (rst.next()) {
-                    criterialist.add(rst.getInt("resolutionid"));
-                }
-            }
-            
-            if (personMaintainNeeded) { // check if needed, then add to list
-                pstmt = conn.prepareStatement("SELECT resolutionid FROM resolutions r JOIN maintainpersonresolution s ON s.resolutionid = r.resolutionid" + query);
-                rst = pstmt.executeQuery();
-                
-                while (rst.next()) {
-                    criterialist.add(rst.getInt("resolutionid"));
-                }
-            }
-            
-            if (infraMaintainNeeded) {  // check if needed, then add to list
-                pstmt = conn.prepareStatement("SELECT resolutionid FROM resolutions r JOIN maintaininfraresolution s ON s.resolutionid = r.resolutionid" + query);
-                rst = pstmt.executeQuery();
-                
-                while (rst.next()) {
-                    criterialist.add(rst.getInt("resolutionid"));
-                }
-            }
-            
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }    
     }
+        
+    public void generate_report() {
+        int resolutionid, personnelincharge;
+        String dateofresolution;
+        String description;
+        
+        resolutionbylist.clear();
+        
+        try {
+            Connection conn = DriverManager.getConnection(dbconnection);
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rst = pstmt.executeQuery();
+            
+            while(rst.next()) {
+                resolutionid = rst.getInt("resolutionid");
+                personnelincharge = rst.getInt("personnelincharge");
+                dateofresolution = rst.getString("dateofresolution");
+                description = rst.getString("description");
+                
+                resolutionbylist.add(new Resolution(resolutionid, personnelincharge, dateofresolution, description));
+            }
+        } catch(SQLException e) {}
+                System.err.println(e.getMessage());
+    }
+         
+        
 }

@@ -26,6 +26,14 @@ public class Resolution {
     
     public Resolution() {}
     
+    /*constructor for resolution reporting*/
+    public Resolution(int resolutionid, int personnelincharge, String dateofresolution, String description) {
+        this.resolutionid = resolutionid;
+        this.personnelinvolved = personnelincharge;
+        this.dateofresolution = Date.valueOf(dateofresolution);
+        this.description = description;
+    }
+    
     public Resolution(int complaintid, int personnelinvolved, String description) {
         this.resolutionid = 0;
         this.complaintid = complaintid;
