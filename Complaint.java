@@ -61,13 +61,6 @@ public class Complaint {
         } else if (typeofcomplaint.compareTo("P") == 0) {
             this.securityincharge = 0;
             this.maintainincharge = 0;
-            if (typeofpersonnelcomplaint.name().compareTo("S") == 0) {
-                this.securityrespondent = personnelrespondent;
-                this.maintainrespondent = 0;
-            } else if (typeofpersonnelcomplaint.name().compareTo("M") == 0) {
-                this.maintainrespondent = personnelrespondent;
-                this.securityrespondent = 0;
-            }
             this.problematicinfrastructure = 0;
         }
     }
@@ -213,7 +206,7 @@ public class Complaint {
                     pstmt.executeUpdate();
                     
                 } else if (typeofpersonnelcomplaint.name().compareTo("M") == 0) {
-                    pstmt = conn.prepareStatement("DELETE FROM maintainpersoncomplaint WHERE complaintid=?"); // delete from corresponding table
+                    pstmt = conn.prepareStatement("DELETE FROM maintainpersoncomplaints WHERE complaintid=?"); // delete from corresponding table
                     pstmt.setInt(1, complaintid);
                     pstmt.executeUpdate();
                 }
@@ -513,7 +506,7 @@ public class Complaint {
                    
                 } else if (typeofpersonnelcomplaint.name().compareTo("M") == 0) {
                     securityrespondent = 0;
-                    pstmt = conn.prepareStatement("SELECT maintainrespondent FROM maintainpersoncomplaint WHERE complaintid=?");
+                    pstmt = conn.prepareStatement("SELECT maintainrespondent FROM maintainpersoncomplaints WHERE complaintid=?");
                     pstmt.setInt(1, complaintid);
                     rst = pstmt.executeQuery();
                     problematicinfrastructure = 0;
